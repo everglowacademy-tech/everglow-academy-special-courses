@@ -1,0 +1,83 @@
+/* =========================================================================
+   tokens.css — ÚNICA fuente de verdad de la marca Everglow Academy.
+   Cambia un valor aquí y se actualiza en toda la página.
+   Los valores marcados con [PLACEHOLDER] esperan confirmación de la academia.
+   ========================================================================= */
+
+/* Fuentes [PLACEHOLDER]: no tenemos las tipografías oficiales todavía.
+   Cuando lleguen, reemplaza este @import por @font-face locales (woff2) con
+   font-display: swap y su <link rel="preload"> en el <head>. */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* --- Color de marca (confirmado: extraído del logo de Everglow) --- */
+  --eg-blue: #004aad;          /* azul Everglow, contraste 8.6:1 sobre blanco */
+  --eg-blue-600: #003a8a;      /* hover / estados presionados */
+  --eg-blue-100: #e3ecfa;      /* fondos suaves */
+
+  /* --- Colores de apoyo [PLACEHOLDER hasta tener la paleta oficial] --- */
+  --eg-ink: #0c1a30;           /* texto principal y fondos oscuros */
+  --eg-ink-2: #3d4a5e;         /* texto secundario (7.6:1 sobre --eg-paper) */
+  --eg-paper: #f7f5f0;         /* fondo cálido de página */
+  --eg-white: #ffffff;
+  --eg-line: #d9d6ce;          /* bordes y divisores */
+  --eg-glow: #ffb020;          /* "el brillo": SOLO sobre fondos oscuros o como relleno */
+  --eg-glow-ink: #7a4d00;      /* versión del brillo apta para texto sobre claro (AA) */
+  --eg-muted: #8a8f99;         /* texto tachado / versión "confusa" (no usar para texto esencial) */
+
+  /* --- Tipografía [PLACEHOLDER] --- */
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Escala fluida: móvil 390 px → escritorio 1440 px */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: clamp(1.1875rem, 1.05rem + 0.5vw, 1.375rem);
+  --fs-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --fs-2xl: clamp(2.125rem, 1.4rem + 3vw, 4rem);
+  --fs-3xl: clamp(2.5rem, 1.3rem + 5vw, 5.75rem);
+
+  /* --- Espaciado (base 4 px) --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4.5rem;
+  --sp-9: 7rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --max-w: 76rem;
+
+  /* --- Forma y profundidad --- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-1: 0 1px 2px rgb(12 26 48 / 0.06), 0 4px 14px rgb(12 26 48 / 0.06);
+  --shadow-2: 0 2px 4px rgb(12 26 48 / 0.08), 0 18px 40px rgb(12 26 48 / 0.12);
+  --focus-ring: 0 0 0 3px var(--eg-white), 0 0 0 6px var(--eg-blue);
+
+  /* --- Movimiento --- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-med: 420ms;
+  --dur-slow: 900ms;
+
+  /* --- Datos del curso que se repiten (fuente única para CSS content) --- */
+  --price-full: "$500";
+  --price-installment: "3 × $175";
+}
+
+/* prefers-reduced-motion: anula duraciones para toda la página */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-med: 0ms;
+    --dur-slow: 0ms;
+  }
+}

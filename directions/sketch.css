@@ -1,0 +1,77 @@
+/* Base compartida de los tres bocetos. Todo color/tipo sale de tokens.css. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--eg-ink);
+  background: var(--eg-paper);
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.wrap { width: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* Etiqueta de boceto: se elimina en la versión final */
+.sketch-tag {
+  position: fixed; left: 50%; bottom: var(--sp-3); transform: translateX(-50%); z-index: 50;
+  font: 500 var(--fs-xs)/1 var(--font-mono); letter-spacing: 0.04em;
+  background: var(--eg-ink); color: var(--eg-white);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+/* ---------- Header ---------- */
+.site-header { padding-block: var(--sp-4); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.brand img { height: 30px; width: auto; }
+.nav { display: none; gap: var(--sp-5); font-size: var(--fs-sm); font-weight: 500; }
+.nav a { text-decoration: none; padding-block: var(--sp-1); }
+.nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 900px) { .nav { display: flex; } }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-height: 48px; padding: 0 var(--sp-5);
+  font: 600 var(--fs-sm)/1 var(--font-body); text-decoration: none;
+  border-radius: var(--radius-pill); border: 2px solid transparent; cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn--primary { background: var(--eg-blue); color: var(--eg-white); box-shadow: 0 6px 18px rgb(0 74 173 / 0.28); }
+.btn--primary:hover { background: var(--eg-blue-600); }
+.btn--ghost { background: transparent; color: currentColor; border-color: currentColor; }
+.btn--small { min-height: 40px; padding: 0 var(--sp-4); }
+
+/* ---------- Bloque de texto del hero (común) ---------- */
+.eyebrow {
+  font: 500 var(--fs-xs)/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  margin: 0 0 var(--sp-4);
+}
+.hero-title {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em;
+  font-size: var(--fs-2xl); line-height: 1.02; margin: 0;
+}
+.hero-title small {
+  display: block; margin-top: var(--sp-3);
+  font-size: var(--fs-lg); font-weight: 600; letter-spacing: -0.005em; line-height: 1.25;
+}
+.promise { font-size: var(--fs-lg); line-height: 1.45; margin: var(--sp-5) 0 0; max-width: 34ch; }
+.price-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2) var(--sp-4); margin-top: var(--sp-5); }
+.price { font: 800 var(--fs-xl)/1 var(--font-display); }
+.price-alt { font-size: var(--fs-sm); }
+.cta-row { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
