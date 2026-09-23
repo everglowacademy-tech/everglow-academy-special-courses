@@ -1,14 +1,13 @@
-# /brand — archivos de marca recibidos
+# /brand: archivos de marca originales
 
-| Archivo | Estado |
+No se publican. Las versiones optimizadas están en `site/assets/`.
+
+| Archivo | Nota |
 |---|---|
-| `logos/everglow-original.png` | Recibido en PNG. **Falta el SVG.** Azul extraído: `#004AAD`. |
-| `logos/asu-original.webp` | Recibido. |
-| `logos/ylai-original.png` | Recibido. |
-| `logos/iesa-original.jpg` | Recibido (JPG 400 px, fondo blanco; mejor si hay SVG/PNG transparente). |
-| INDELSER | **Falta.** |
-| Evy / Glowy (mascotas) | **Faltan.** |
-| Tipografías oficiales | **Faltan.** Se usan placeholders en `site/css/tokens.css`. |
-| Fotos reales / instructor | **Faltan.** |
+| `logos/everglow-wordmark.png` | Logo recibido (PNG). |
+| `logos/everglow-wordmark-traced.svg` | Vectorizado automáticamente a partir del PNG. Se usa en la web; reemplazar por el SVG original cuando exista. |
+| `logos/everglow-isotype-*.{webp,png}` | Isotipo azul y blanco; de aquí salen los favicons. |
+| `logos/asu-original.webp`, `ylai-original.png`, `iesa-original.jpg` | Logos de instituciones. **Falta INDELSER.** |
+| `photos/beatriz-chacon-original.webp` | Foto de la instructora (1080×1080). |
 
-Las versiones optimizadas (recortadas, WebP, fondo transparente) están en `site/assets/logos/`.
+Paleta oficial: `#004aad` `#2095f2` `#b9e0ff` `#ffde59` `#d9d9d9` · Tipografías oficiales: Gilroy y Placard Next (ver `site/css/tokens.css`).

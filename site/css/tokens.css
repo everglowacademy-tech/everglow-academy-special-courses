@@ -1,45 +1,68 @@
 /* =========================================================================
    tokens.css — ÚNICA fuente de verdad de la marca Everglow Academy.
    Cambia un valor aquí y se actualiza en toda la página.
-   Los valores marcados con [PLACEHOLDER] esperan confirmación de la academia.
    ========================================================================= */
 
-/* Fuentes [PLACEHOLDER]: no tenemos las tipografías oficiales todavía.
-   Cuando lleguen, reemplaza este @import por @font-face locales (woff2) con
-   font-display: swap y su <link rel="preload"> en el <head>. */
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+/* ---------- Fuentes ----------
+   Oficiales: Gilroy (texto) y Placard Next (titulares). Son fuentes comerciales:
+   no se pueden descargar de Google Fonts y hay que tener la licencia web.
+   Mientras tanto se usan dos equivalentes libres (licencia OFL, en /fonts):
+     Gilroy       → Plus Jakarta Sans
+     Placard Next → Barlow Condensed
+   Para activar las oficiales:
+     1. Copia los .woff2 con licencia en /fonts (p. ej. gilroy-400.woff2).
+     2. Duplica un bloque @font-face de abajo y cambia font-family y url.
+     3. Actualiza los <link rel="preload"> del <head> de index.html.
+   Las variables --font-* ya ponen "Gilroy" y "Placard Next" primero. */
+@font-face { font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 800; font-display: swap; src: url("../fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/barlow-condensed-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/barlow-condensed-latin-700-normal.woff2") format("woff2"); }
 
 :root {
-  /* --- Color de marca (confirmado: extraído del logo de Everglow) --- */
-  --eg-blue: #004aad;          /* azul Everglow, contraste 8.6:1 sobre blanco */
-  --eg-blue-600: #003a8a;      /* hover / estados presionados */
-  --eg-blue-100: #e3ecfa;      /* fondos suaves */
+  /* ---------- Paleta oficial ---------- */
+  --eg-blue: #004aad;   /* primario. Texto sobre blanco: 8.6:1 */
+  --eg-sky: #2095f2;    /* acento. Sobre blanco solo 3.2:1 → NO usar para texto pequeño */
+  --eg-ice: #b9e0ff;    /* fondos suaves, bordes */
+  --eg-sun: #ffde59;    /* "resaltador": marca lo importante. Sobre azul 6.2:1; NUNCA como texto sobre blanco */
+  --eg-grey: #d9d9d9;   /* divisores, estados inactivos */
 
-  /* --- Colores de apoyo [PLACEHOLDER hasta tener la paleta oficial] --- */
-  --eg-ink: #0c1a30;           /* texto principal y fondos oscuros */
-  --eg-ink-2: #3d4a5e;         /* texto secundario (7.6:1 sobre --eg-paper) */
-  --eg-paper: #f7f5f0;         /* fondo cálido de página */
+  /* ---------- Neutros de apoyo (derivados de la paleta, no oficiales) ---------- */
+  --eg-ink: #0b1e3d;     /* texto principal y la "videollamada" oscura */
+  --eg-ink-2: #3b4a63;   /* texto secundario: 8.4:1 sobre blanco */
+  --eg-ink-3: #5a6781;   /* texto terciario: 5.6:1 sobre blanco (mínimo AA) */
+  --eg-navy: #0f2a55;    /* superficies dentro del bloque oscuro */
   --eg-white: #ffffff;
-  --eg-line: #d9d6ce;          /* bordes y divisores */
-  --eg-glow: #ffb020;          /* "el brillo": SOLO sobre fondos oscuros o como relleno */
-  --eg-glow-ink: #7a4d00;      /* versión del brillo apta para texto sobre claro (AA) */
-  --eg-muted: #8a8f99;         /* texto tachado / versión "confusa" (no usar para texto esencial) */
+  --eg-mist: #f3f8ff;    /* fondo de sección alterno (hielo muy claro) */
+  --eg-error: #b3261e;   /* errores de formulario: 6.5:1 sobre blanco */
+  --eg-error-bg: #fdeceb;
+  --eg-success: #1b6e3a; /* confirmaciones: 6.3:1 sobre blanco */
 
-  /* --- Tipografía [PLACEHOLDER] --- */
-  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  /* ---------- Roles (úsalos en componentes en vez de colores sueltos) ---------- */
+  --color-bg: var(--eg-white);
+  --color-bg-alt: var(--eg-mist);
+  --color-text: var(--eg-ink);
+  --color-text-muted: var(--eg-ink-2);
+  --color-primary: var(--eg-blue);
+  --color-primary-hover: #003a8a;
+  --color-highlight: var(--eg-sun);
+  --color-line: var(--eg-grey);
 
-  /* Escala fluida: móvil 390 px → escritorio 1440 px */
+  /* ---------- Tipografía ---------- */
+  --font-body: "Gilroy", "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Placard Next", "Barlow Condensed", "Arial Narrow", sans-serif-condensed, sans-serif;
+
   --fs-xs: 0.8125rem;
   --fs-sm: 0.9375rem;
   --fs-md: 1.0625rem;
-  --fs-lg: clamp(1.1875rem, 1.05rem + 0.5vw, 1.375rem);
-  --fs-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
-  --fs-2xl: clamp(2.125rem, 1.4rem + 3vw, 4rem);
-  --fs-3xl: clamp(2.5rem, 1.3rem + 5vw, 5.75rem);
+  --fs-lg: clamp(1.1875rem, 1.08rem + 0.45vw, 1.375rem);
+  --fs-xl: clamp(1.625rem, 1.3rem + 1.3vw, 2.375rem);
+  --fs-2xl: clamp(2.25rem, 1.6rem + 2.8vw, 4rem);
+  --fs-3xl: clamp(3rem, 1.9rem + 4.8vw, 6.25rem);
 
-  /* --- Espaciado (base 4 px) --- */
+  /* ---------- Espaciado (base 4 px) ---------- */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
@@ -49,35 +72,33 @@
   --sp-7: 3rem;
   --sp-8: 4.5rem;
   --sp-9: 7rem;
-  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
-  --max-w: 76rem;
+  --gutter: 1rem;                       /* 16 px en móvil */
+  --section-y: clamp(4rem, 2.8rem + 5vw, 7.5rem);
+  --max-w: 75rem;
 
-  /* --- Forma y profundidad --- */
+  /* ---------- Forma y profundidad ---------- */
   --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
   --radius-pill: 999px;
-  --shadow-1: 0 1px 2px rgb(12 26 48 / 0.06), 0 4px 14px rgb(12 26 48 / 0.06);
-  --shadow-2: 0 2px 4px rgb(12 26 48 / 0.08), 0 18px 40px rgb(12 26 48 / 0.12);
+  --shadow-1: 0 1px 2px rgb(11 30 61 / 0.06), 0 6px 18px rgb(11 30 61 / 0.07);
+  --shadow-2: 0 2px 6px rgb(11 30 61 / 0.08), 0 24px 60px rgb(11 30 61 / 0.18);
   --focus-ring: 0 0 0 3px var(--eg-white), 0 0 0 6px var(--eg-blue);
+  --focus-ring-dark: 0 0 0 3px var(--eg-ink), 0 0 0 6px var(--eg-sun);
 
-  /* --- Movimiento --- */
+  /* ---------- Movimiento ---------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 160ms;
   --dur-med: 420ms;
   --dur-slow: 900ms;
-
-  /* --- Datos del curso que se repiten (fuente única para CSS content) --- */
-  --price-full: "$500";
-  --price-installment: "3 × $175";
 }
 
-/* prefers-reduced-motion: anula duraciones para toda la página */
+@media (min-width: 640px) {
+  :root { --gutter: clamp(1.5rem, 0.5rem + 2.5vw, 2.5rem); }
+}
+
+/* prefers-reduced-motion: las duraciones se anulan en toda la página */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --dur-fast: 0ms;
-    --dur-med: 0ms;
-    --dur-slow: 0ms;
-  }
+  :root { --dur-fast: 0ms; --dur-med: 0ms; --dur-slow: 0ms; }
 }
