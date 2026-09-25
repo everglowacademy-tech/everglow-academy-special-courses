@@ -32,7 +32,7 @@ La página ya funciona en inglés y español y está conectada a tu hoja. Esto e
 ## Textos para validar
 
 Los escribí yo y están marcados `[BORRADOR]` en el código:
-- [ ] El mensaje de ejemplo del hero y las respuestas de la sala. Solo *"Just to confirm — the 4th of June?"* viene del curso.
+- [ ] El mensaje de ejemplo del hero y las respuestas de la sala. Solo *"Just to confirm — the 4th of June?"* viene del curso. Quité toda mención a Northgate Energy, como pediste.
 - [ ] La línea que describe cada uno de los 12 módulos (en inglés y español).
 - [ ] Las 5 preguntas del autodiagnóstico y el umbral para decir "por debajo de B2".
 - [ ] **El tono en español:** usé **tú** en toda la página. Si la academia habla de **usted** a sus clientes ejecutivos, dímelo y lo cambio en todos los textos.

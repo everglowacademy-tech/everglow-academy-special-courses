@@ -531,29 +531,6 @@ button { font: inherit; color: inherit; }
 .footer__links { list-style: none; display: grid; gap: var(--sp-2); }
 .footer__links a { display: inline-block; padding-block: var(--sp-1); }
 .footer__copy { margin-top: var(--sp-7); padding-top: var(--sp-5); border-top: 1px solid rgb(255 255 255 / 0.15); font-size: var(--fs-xs); }
-/* En móvil deja sitio para la barra fija de abajo */
-@media (max-width: 899px) { .site-footer { padding-bottom: 6.5rem; } }
-
-/* =========================================================================
-   Barra de inscripción pegajosa
-   ========================================================================= */
-.enroll-bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
-  background: var(--eg-white); border-top: 1px solid var(--color-line);
-  box-shadow: 0 -8px 30px rgb(11 30 61 / 0.12);
-  padding-block: var(--sp-3); padding-bottom: max(var(--sp-3), env(safe-area-inset-bottom));
-  transform: translateY(110%); visibility: hidden;
-  transition: transform var(--dur-med) var(--ease-out), visibility 0s linear var(--dur-med);
-}
-.enroll-bar.is-visible { transform: none; visibility: visible; transition: transform var(--dur-med) var(--ease-out), visibility 0s; }
-.enroll-bar__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); }
-.enroll-bar__price { margin: 0; line-height: 1.2; }
-.enroll-bar__price b { font-family: var(--font-display); font-size: 1.625rem; }
-.enroll-bar__price span { display: block; font-size: var(--fs-xs); color: var(--color-text-muted); }
-@media (min-width: 900px) {
-  .enroll-bar { top: 0; bottom: auto; border-top: 0; border-bottom: 1px solid var(--color-line); box-shadow: 0 8px 30px rgb(11 30 61 / 0.1); transform: translateY(-110%); padding-block: var(--sp-2); }
-  .enroll-bar__price span { display: inline; margin-left: var(--sp-2); font-size: var(--fs-sm); }
-}
 
 /* =========================================================================
    Sin movimiento: todo visible, sin transformaciones ni animaciones

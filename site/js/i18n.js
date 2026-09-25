@@ -31,7 +31,7 @@ const ES = {
   "hero.promise": "Para gerentes, directores y ejecutivos: aprende a decir primero lo importante en inglés — en reportes, reuniones y conversaciones difíciles.",
   "hero.priceAlt": "un solo pago, o 3 cuotas de $175",
 
-  "call.bar": "Northgate Energy · Revisión semanal de Eastfield",
+  "call.bar": "Revisión de proyecto · Reporte semanal",
   "call.participants": "Participantes",
   "call.youShort": "TÚ",
   "call.you": "Tú · Director(a)",
@@ -44,7 +44,7 @@ const ES = {
   "call.say": "Tú dices:",
   "call.replies": "Respuestas de la sala",
   "call.hint": "Mueve el switch. Mismos datos, mismo inglés — otro orden.",
-  "call.caption": "Una escena de Northgate Energy, la empresa ficticia donde ocurre todo el curso. Los ejemplos están en inglés: es lo que vas a practicar.",
+  "call.caption": "Una escena típica del curso. Los ejemplos están en inglés: es lo que vas a practicar.",
 
   "facts.label": "El curso en cifras",
   "facts.weeks": "semanas",
@@ -69,8 +69,8 @@ const ES = {
   "problem.c3.module": "Módulo 4 · Tone, Register and Writing",
 
   "program.eyebrow": "Lo que vas a practicar",
-  "program.title": '12 módulos, <span class="hl">una empresa en crisis</span>',
-  "program.lead": "Todo ocurre en Northgate Energy: un proyecto retrasado, un tema de seguridad y una comunidad esperando respuestas.",
+  "program.title": '12 módulos, <span class="hl">una habilidad a la vez</span>',
+  "program.lead": "Cada módulo suma una herramienta. Los dos últimos las ponen a trabajar en situaciones reales.",
   m0: "Identifica dónde está tu inglés hoy y qué cambiar primero.",
   m1: "Abre cualquier reporte con lo importante: estado, causa, petición.",
   m2: "Aclara y confirma cifras, fechas y decisiones antes de que se pierdan.",
@@ -82,7 +82,7 @@ const ES = {
   m8: "Negocia tiempo, presupuesto y alcance con quien quiere otra cosa.",
   m9: "Adáptate a juntas directivas, reguladores y comunidades.",
   m10: "Ensaya una situación real de tu propio trabajo.",
-  m11: "La crisis completa de Northgate, de principio a fin.",
+  m11: "Todo junto, en una simulación completa y realista.",
 
   "check.eyebrow": "Autodiagnóstico · 1 minuto",
   "check.title": '¿Este curso <span class="hl">es para ti?</span>',
@@ -116,7 +116,7 @@ const ES = {
   "fit.y3": "El inglés es parte de tu semana laboral.",
   "fit.y4": "Quieres práctica en vivo, con feedback.",
   "fit.no": "No es para ti si",
-  "fit.n1": 'Tu inglés está por debajo de B2 — <a href="#self-check">haz el autodiagnóstico</a>.',
+  "fit.n1": 'Tu inglés está por debajo de B2 — <a href="https://www.cambridgeenglish.org/test-your-english/business/" target="_blank" rel="noopener">haz el test de Cambridge</a>.',
   "fit.n2": "Buscas un curso de liderazgo o técnico.",
   "fit.n3": "Buscas clases grabadas para ver por tu cuenta.",
   "fit.n4": "Esperas hablar con fluidez en 12 semanas. Nadie puede prometerte eso con honestidad.",
@@ -136,7 +136,7 @@ const ES = {
   "price.i4": "Material de una página por módulo",
   "price.i5": "Feedback en vivo en cada práctica",
   "price.i6": "Certificado con perfil en seis criterios",
-  "price.step1": "<b>Inscríbete</b> abajo. Aquí no se cobra nada.",
+  "price.step1": "<b>Inscríbete</b> con el formulario de abajo.",
   "price.step2": "<b>En 24 horas</b> te enviamos por correo las instrucciones de Zelle.",
   "price.step3": "<b>Tu cupo queda confirmado</b> cuando llega tu pago.",
 
@@ -154,7 +154,7 @@ const ES = {
   "form.paySplit": "<b>3 cuotas</b> — $175 USD cada una",
   "form.terms": 'Acepto los <a href="terms.html" target="_blank" rel="noopener">Términos de uso</a> y la <a href="privacy.html" target="_blank" rel="noopener">Política de privacidad</a>.',
   "form.submit": "Inscribirme",
-  "form.fine": "Aquí no se cobra nada. Te enviaremos las instrucciones de Zelle por correo.",
+  "form.fine": "Te enviaremos por correo las instrucciones de pago por Zelle.",
   "form.fallback": '¿El formulario no funciona? <a class="js-mailto" href="mailto:everglowacademy@gmail.com">Inscríbete por correo</a>.',
 
   "success.title": "Recibimos tu inscripción",
@@ -177,7 +177,7 @@ const ES = {
   "faq.q5": "¿Y si falto a una sesión?",
   "faq.a5": "La semana 6 incluye una sesión de recuperación. Para obtener el certificado necesitas asistir al menos a 17 de las 22 sesiones.",
   "faq.q6": "¿Cómo pago?",
-  "faq.a6": "Por Zelle, después de inscribirte: $500 USD en un pago, o 3 cuotas de $175 ($525 en total). En 24 horas te enviamos las instrucciones. En esta página no se cobra nada.",
+  "faq.a6": "Por Zelle, después de inscribirte: $500 USD en un pago, o 3 cuotas de $175 ($525 en total). En 24 horas te enviamos las instrucciones.",
   "faq.q7": "¿Y si necesito cancelar?",
   "faq.a7": 'Las cancelaciones y reembolsos están explicados en nuestros <a href="terms.html#refunds">Términos de uso</a>.',
   "faq.q8": "¿Qué recibo al final?",
@@ -190,7 +190,6 @@ const ES = {
   "footer.privacy": "Política de privacidad",
   "footer.terms": "Términos de uso",
   "footer.copy": "© 2026 Everglow Academy. Todos los derechos reservados.",
-  "bar.alt": "o 3 × $175",
 };
 
 // ---------- Textos que genera el JavaScript ----------

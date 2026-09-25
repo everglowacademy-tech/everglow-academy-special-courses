@@ -294,29 +294,6 @@ function initLoop() {
   io.observe(loop);
 }
 
-/* ---------------------------------------------------------------------------
-   5. Barra de inscripción pegajosa: visible después del hero y
-      oculta cuando el formulario ya está en pantalla
-   --------------------------------------------------------------------------- */
-function initEnrollBar() {
-  const barEl = $("#enroll-bar");
-  const hero = $(".hero");
-  const form = $("#enroll");
-  if (!barEl || !hero || !("IntersectionObserver" in window)) return;
-  const link = $("a", barEl);
-  let heroVisible = true;
-  let formVisible = false;
-
-  const sync = () => {
-    const show = !heroVisible && !formVisible;
-    barEl.classList.toggle("is-visible", show);
-    barEl.setAttribute("aria-hidden", String(!show));
-    link.tabIndex = show ? 0 : -1;
-  };
-  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; sync(); }, { threshold: 0 }).observe(hero);
-  if (form) new IntersectionObserver(([e]) => { formVisible = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(form);
-}
-
 // Módulo type="module": se ejecuta con el DOM ya listo
 initI18n(); // primero: el resto pinta textos con el idioma ya decidido
 initRewrite();
@@ -326,6 +303,5 @@ initProgram();
 initScrollEffects();
 initPricing();
 initLoop();
-initEnrollBar();
 const quiz = initQuiz();
 initForm(quiz);
