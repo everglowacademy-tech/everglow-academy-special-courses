@@ -4,6 +4,7 @@
 // que se está leyendo.
 // =========================================================================
 import { currentLang, setLang, initLangSwitch, reveal } from "./lang.js";
+import { initEmailLinks } from "./email.js";
 
 function apply(lang) {
   document.querySelectorAll("[data-lang-block]").forEach((b) => (b.hidden = b.dataset.langBlock !== lang));
@@ -40,6 +41,7 @@ function watchSections() {
   block.querySelectorAll("h2[id]").forEach((h) => io.observe(h));
 }
 
+initEmailLinks();
 initLangSwitch();
 document.addEventListener("langchange", (e) => apply(e.detail.lang));
 setLang(currentLang(), { save: false });

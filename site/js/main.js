@@ -6,6 +6,7 @@
 import { initI18n, t } from "./i18n.js";
 import { initQuiz } from "./quiz.js";
 import { initForm } from "./form.js";
+import { initEmailLinks } from "./email.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -295,6 +296,7 @@ function initLoop() {
 }
 
 // Módulo type="module": se ejecuta con el DOM ya listo
+initEmailLinks();
 initI18n(); // primero: el resto pinta textos con el idioma ya decidido
 initRewrite();
 initReveal();

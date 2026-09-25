@@ -187,6 +187,7 @@ const ES = {
 
   "footer.contact": "Contacto",
   "footer.follow": "Síguenos",
+  "footer.newTab": "(se abre en una pestaña nueva)",
   "footer.privacy": "Política de privacidad",
   "footer.terms": "Términos de uso",
   "footer.copy": "© 2026 Everglow Academy. Todos los derechos reservados.",

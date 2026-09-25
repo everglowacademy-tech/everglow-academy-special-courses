@@ -26,7 +26,7 @@ La página ya funciona en inglés y español y está conectada a tu hoja. Esto e
 - [ ] **Fecha de inicio de la próxima cohorte**, y días y horarios (con zona horaria).
 - [ ] **Bio real de Beatriz:** trayectoria, formación, certificaciones.
 - [ ] **Enlace al programa general de inglés** (`GENERAL_PROGRAM_URL` en `config.js`), para quien sale por debajo de B2. Mientras no esté, el botón abre un correo.
-- [ ] **URLs de Instagram y LinkedIn** (footer). Hoy apuntan a `#`.
+- [ ] **LinkedIn u otras redes:** solo está Instagram. Si quieres sumar otra red, pásame el enlace.
 - [ ] **¿Cuáles son los seis criterios del certificado?** Nombrarlos le daría peso.
 
 ## Textos para validar
