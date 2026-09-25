@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leading in English — Communication Tools for Global Energy Leaders | Everglow Academy</title>
-  <meta name="description" content="Live English course for managers, directors and executives in energy (B2–C1). 12 weeks, 22 live sessions, groups of 8–10. Learn to say what matters first. $500 USD or 3 × $175.">
+  <title data-i18n="meta.title">Leading in English — Communication Tools for Global Energy Leaders | Everglow Academy</title>
+  <meta name="description" data-i18n-attr="content:meta.description" content="Live English course for managers, directors and executives in energy (B2–C1). 12 weeks, 22 live sessions, groups of 8–10. Learn to say what matters first. $500 USD or 3 × $175.">
   <meta name="theme-color" content="#004aad">
 
   <!-- [PENDIENTE] Cambia https://SITE-URL por el dominio final de Netlify (ver PENDIENTES.md) -->
@@ -32,8 +32,17 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
 
-  <!-- Marca que hay JS antes de pintar: sin JS todo el contenido queda visible -->
-  <script>document.documentElement.classList.add("js");</script>
+  <!-- Antes de pintar: marca que hay JS y, si el idioma es español, oculta un instante
+       la página para no mostrar el inglés y luego cambiarlo (máx. 1,2 s por seguridad). -->
+  <script>
+    (function () {
+      var d = document.documentElement, l = null;
+      d.classList.add("js");
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("eg-lang"); } catch (e) {}
+      if (!l) l = (navigator.language || "").slice(0, 2) === "es" ? "es" : "en";
+      if (l === "es") { d.lang = "es"; d.classList.add("i18n-pending"); setTimeout(function () { d.classList.remove("i18n-pending"); }, 1200); }
+    })();
+  </script>
   <script type="module" src="js/main.js"></script>
 
   <script type="application/ld+json">
@@ -44,38 +53,20 @@
     "description": "Applied English for managers, directors and executives who already lead. Live video sessions, B2–C1 level, set inside a fictional energy company, Northgate Energy.",
     "inLanguage": "en",
     "educationalLevel": "B2–C1 (CEFR)",
-    "provider": {
-      "@type": "Organization",
-      "name": "Everglow Academy",
-      "email": "everglowacademy@gmail.com"
-    },
-    "offers": {
-      "@type": "Offer",
-      "category": "Paid",
-      "price": "500",
-      "priceCurrency": "USD"
-    },
+    "provider": { "@type": "Organization", "name": "Everglow Academy", "email": "everglowacademy@gmail.com" },
+    "offers": { "@type": "Offer", "category": "Paid", "price": "500", "priceCurrency": "USD" },
     "hasCourseInstance": {
       "@type": "CourseInstance",
       "courseMode": "Online",
       "courseWorkload": "PT22H",
-      "courseSchedule": {
-        "@type": "Schedule",
-        "duration": "PT1H",
-        "repeatFrequency": "P1W",
-        "repeatCount": 22
-      },
-      "instructor": {
-        "@type": "Person",
-        "name": "Beatriz Chacón",
-        "jobTitle": "CEO and Founder, Everglow Academy"
-      }
+      "courseSchedule": { "@type": "Schedule", "duration": "PT1H", "repeatFrequency": "P1W", "repeatCount": 22 },
+      "instructor": { "@type": "Person", "name": "Beatriz Chacón", "jobTitle": "CEO and Founder, Everglow Academy" }
     }
   }
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
   <!-- Barra de progreso de lectura (decorativa) -->
   <div class="read-progress" aria-hidden="true"><span></span></div>
@@ -83,18 +74,25 @@
   <!-- ================= 1. Header ================= -->
   <header class="site-header">
     <div class="wrap site-header__inner">
-      <a class="brand" href="#top" aria-label="Everglow Academy — back to top">
+      <a class="brand" href="#top" aria-label="Everglow Academy — back to top" data-i18n-attr="aria-label:brand.home">
         <img src="assets/logos/everglow.svg" alt="" width="859" height="227">
       </a>
-      <nav class="nav" aria-label="Main">
+      <nav class="nav" aria-label="Main" data-i18n-attr="aria-label:nav.label">
         <ul>
-          <li><a href="#program">Program</a></li>
-          <li><a href="#self-check">Is it for you?</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#program" data-i18n="nav.program">Program</a></li>
+          <li><a href="#self-check" data-i18n="nav.check">Is it for you?</a></li>
+          <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
         </ul>
       </nav>
-      <a class="btn btn--primary btn--small" href="#enroll">Enroll now</a>
+      <div class="site-header__end">
+        <!-- Selector de idioma -->
+        <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-set-lang="en" aria-pressed="true"><span aria-hidden="true">EN</span><span class="sr-only">English</span></button>
+          <button type="button" data-set-lang="es" aria-pressed="false"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></button>
+        </div>
+        <a class="btn btn--primary btn--small site-header__cta" href="#enroll" data-i18n="cta.enroll">Enroll now</a>
+      </div>
     </div>
   </header>
 
@@ -103,79 +101,80 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="wrap hero__grid">
         <div class="hero__intro">
-          <p class="eyebrow">Everglow Academy · Live course · B2–C1</p>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Live course · <span class="nowrap">B2–C1</span> · 12 weeks</p>
+          <!-- El nombre del curso no se traduce: es el nombre oficial -->
           <h1 class="hero__title" id="hero-title">
             <span class="hero__title-main">Leading in English</span>
             <span class="hero__title-sub">Communication Tools for Global Energy Leaders</span>
           </h1>
-          <p class="hero__promise">For managers, directors and executives who already lead: say what matters first — in updates, meetings and hard conversations.</p>
+          <p class="hero__promise" data-i18n="hero.promise">For leaders who already lead: say what matters first — in updates, meetings and hard conversations.</p>
         </div>
 
-        <!-- La idea central: el mismo update, dos órdenes distintos, dentro de una llamada -->
+        <!-- La idea central: el mismo update, dos órdenes distintos, dentro de una llamada.
+             Los mensajes de ejemplo van siempre en inglés: es lo que se practica en el curso. -->
         <figure class="call" aria-labelledby="call-caption">
           <div class="call__bar">
-            <span>Northgate Energy · Eastfield weekly review</span>
-            <span class="call__live">Live</span>
+            <span data-i18n="call.bar">Northgate Energy · Eastfield weekly review</span>
+            <span class="call__live" data-i18n="call.live">Live</span>
           </div>
-          <ul class="call__tiles" aria-label="Participants">
-            <li class="tile is-speaking" data-id="you"><span class="tile__av" aria-hidden="true">YOU</span><span class="tile__name">You · Director</span></li>
-            <li class="tile" data-id="sc"><span class="tile__av" aria-hidden="true">SC</span><span class="tile__name">Steering</span></li>
-            <li class="tile" data-id="op"><span class="tile__av" aria-hidden="true">OP</span><span class="tile__name">Operations</span></li>
-            <li class="tile" data-id="cr"><span class="tile__av" aria-hidden="true">CR</span><span class="tile__name">Community</span></li>
+          <ul class="call__tiles" aria-label="Participants" data-i18n-attr="aria-label:call.participants">
+            <li class="tile is-speaking" data-id="you"><span class="tile__av" aria-hidden="true" data-i18n="call.youShort">YOU</span><span class="tile__name" data-i18n="call.you">You · Director</span></li>
+            <li class="tile" data-id="sc"><span class="tile__av" aria-hidden="true">SC</span><span class="tile__name" data-i18n="call.sc">Steering</span></li>
+            <li class="tile" data-id="op"><span class="tile__av" aria-hidden="true">OP</span><span class="tile__name" data-i18n="call.op">Operations</span></li>
+            <li class="tile" data-id="cr"><span class="tile__av" aria-hidden="true">CR</span><span class="tile__name" data-i18n="call.cr">Community</span></li>
           </ul>
 
           <div class="call__controls">
             <button class="switch" type="button" role="switch" aria-checked="false" id="rewrite-switch" aria-describedby="rewrite-hint">
-              <span class="switch__off">Buried</span>
+              <span class="switch__off" data-i18n="call.off">Buried</span>
               <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-              <span class="switch__on">Point first</span>
+              <span class="switch__on" data-i18n="call.on">Point first</span>
             </button>
-            <p class="meter" aria-hidden="true"><b id="meter-num">51</b> words before the point</p>
+            <p class="meter" aria-hidden="true"><b id="meter-num">51</b> <span data-i18n="call.meter">words before the point</span></p>
           </div>
 
           <div class="call__speech">
-            <p class="call__who">You say:</p>
+            <p class="call__who" data-i18n="call.say">You say:</p>
             <!-- [BORRADOR] Textos del escenario escritos por nosotros; validar con los materiales del curso.
                  Las palabras entre [[ ]] son "el punto". El texto sin JS es la versión larga. -->
-            <div class="call__text" id="rewrite-text"
+            <div class="call__text" id="rewrite-text" lang="en"
                  data-buried="Hi everyone, so as you know the team has been working really hard on Eastfield over the last few weeks, and there have been a number of challenges with suppliers and also some weather issues, and we’ve been looking at different options, and after a lot of discussion it looks like [[we will probably need about three more weeks]], so [[we would need your approval for a second crew]] if possible."
                  data-clear="[[Eastfield is three weeks behind.]] The transformer arrived late and weather cost us six days. [[I need your approval for a second crew by Friday]] — that keeps commissioning on the 4th of June.">
               <p>Hi everyone, so as you know the team has been working really hard on Eastfield over the last few weeks, and there have been a number of challenges with suppliers and also some weather issues, and we’ve been looking at different options, and after a lot of discussion it looks like <mark>we will probably need about three more weeks</mark>, so <mark>we would need your approval for a second crew</mark> if possible.</p>
             </div>
           </div>
 
-
           <!-- Reacciones de la sala: cambian según la versión -->
-          <ol class="call__replies" id="call-replies" aria-label="Replies from the room">
-            <li class="reply" data-who="sc"><span class="reply__who">Steering committee</span><span class="reply__text">Sorry — what exactly do you need from us?</span></li>
-            <li class="reply" data-who="cr"><span class="reply__who">Community relations</span><span class="reply__text">So… is June still happening or not?</span></li>
+          <ol class="call__replies" id="call-replies" lang="en" aria-label="Replies from the room" data-i18n-attr="aria-label:call.replies">
+            <li class="reply"><span class="reply__who">Steering committee</span><span class="reply__text">Sorry — what exactly do you need from us?</span></li>
+            <li class="reply"><span class="reply__who">Community relations</span><span class="reply__text">So… is June still happening or not?</span></li>
           </ol>
 
-          <figcaption class="call__caption" id="call-caption"><span id="rewrite-hint">Flip the switch. Same facts, same English — different order.</span> A scene from Northgate Energy, the fictional company where the whole course takes place.</figcaption>
+          <figcaption class="call__caption" id="call-caption"><span id="rewrite-hint" data-i18n="call.hint">Flip the switch. Same facts, same English — different order.</span> <span data-i18n="call.caption">A scene from Northgate Energy, the fictional company where the whole course takes place.</span></figcaption>
         </figure>
 
         <div class="hero__buy">
           <p class="price-tag">
             <span class="price-tag__main">$500 <small>USD</small></span>
-            <span class="price-tag__alt">one payment, or 3 installments of $175</span>
+            <span class="price-tag__alt" data-i18n="hero.priceAlt">one payment, or 3 installments of $175</span>
           </p>
           <div class="cta-row">
-            <a class="btn btn--primary btn--large" href="#enroll">Enroll now</a>
-            <a class="btn btn--ghost btn--large" href="#self-check">Is this course for you?</a>
+            <a class="btn btn--primary btn--large" href="#enroll" data-i18n="cta.enroll">Enroll now</a>
+            <a class="btn btn--ghost btn--large" href="#self-check" data-i18n="cta.check">Is this course for you?</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ================= 3. Datos rápidos ================= -->
-    <section class="facts" aria-label="Course at a glance">
+    <section class="facts" aria-label="Course at a glance" data-i18n-attr="aria-label:facts.label">
       <ul class="wrap facts__list">
-        <li><b data-count="12">12</b><span>weeks</span></li>
-        <li><b data-count="22">22</b><span>live sessions</span></li>
-        <li><b data-count="60">60</b><span>minutes each</span></li>
-        <li><b data-count="8" data-count-to="10">8–10</b><span>people per group</span></li>
-        <li><b>B2–C1</b><span>CEFR level</span></li>
-        <li><b>0</b><span>homework</span></li>
+        <li><b data-count="12">12</b><span data-i18n="facts.weeks">weeks</span></li>
+        <li><b data-count="22">22</b><span data-i18n="facts.sessions">live sessions</span></li>
+        <li><b data-count="60">60</b><span data-i18n="facts.minutes">minutes each</span></li>
+        <li><b data-count="8" data-count-to="10">8–10</b><span data-i18n="facts.group">people per group</span></li>
+        <li><b>B2–C1</b><span data-i18n="facts.level">CEFR level</span></li>
+        <li><b>0</b><span data-i18n="facts.homework">homework</span></li>
       </ul>
     </section>
 
@@ -183,91 +182,66 @@
     <section class="section problem" id="problem" aria-labelledby="problem-title">
       <div class="wrap">
         <header class="section__head reveal">
-          <p class="eyebrow">The problem</p>
-          <h2 class="section__title" id="problem-title">You know the English. <span class="hl">The moment still gets away from you.</span></h2>
-          <p class="section__lead">Leaders at B2–C1 rarely lack vocabulary. What costs them is the order, the timing and the tone — the few seconds where a meeting decides whether it listens.</p>
+          <p class="eyebrow" data-i18n="problem.eyebrow">The problem</p>
+          <h2 class="section__title" id="problem-title" data-i18n="problem.title">You know the English. <span class="hl">The moment still gets away.</span></h2>
         </header>
 
         <div class="problem__grid">
           <article class="p-card reveal">
             <div class="p-card__visual" aria-hidden="true">
-              <div class="p-bar">
-                <span class="p-bar__fill"></span>
-                <span class="p-bar__point">the point</span>
-              </div>
-              <p class="p-bar__label">context · context · context · apology · context · <b>the ask</b></p>
+              <div class="p-bar"><span class="p-bar__fill"></span><span class="p-bar__point" data-i18n="problem.point">the point</span></div>
             </div>
-            <h3>The update that runs long</h3>
-            <p>You start with background to feel safe. By the time you reach the decision you need, the committee has moved on.</p>
-            <p class="p-card__module">Module 1 · Get to the Point</p>
+            <h3 data-i18n="problem.c1.title">The update that runs long</h3>
+            <p data-i18n="problem.c1.text">By the time you reach the ask, the room has moved on.</p>
+            <p class="p-card__module" data-i18n="problem.c1.module">Module 1 · Get to the Point</p>
           </article>
 
           <article class="p-card reveal">
             <div class="p-card__visual" aria-hidden="true">
-              <p class="p-draft"><span class="p-draft__typed">Sorry, could you repeat the—</span><span class="p-draft__caret"></span></p>
-              <p class="p-draft__after">You nod instead. Two weeks later, the date was wrong.</p>
+              <p class="p-draft" lang="en"><span class="p-draft__typed">Sorry, could you repeat the—</span><span class="p-draft__caret"></span></p>
             </div>
-            <h3>The question you don’t ask</h3>
-            <p>You didn’t catch a number, a date, a name. Asking feels exposed, so you let it pass — and the mistake travels.</p>
-            <p class="p-card__module">Module 2 · Listen, Clarify, Confirm</p>
+            <h3 data-i18n="problem.c2.title">The question you don’t ask</h3>
+            <p data-i18n="problem.c2.text">You missed the date, nodded anyway — and the mistake travels.</p>
+            <p class="p-card__module" data-i18n="problem.c2.module">Module 2 · Listen, Clarify, Confirm</p>
           </article>
 
           <article class="p-card reveal">
             <div class="p-card__visual" aria-hidden="true">
-              <p class="p-mail">As I said in my previous email, we need this today.</p>
-              <p class="p-mail__tone">Reads as: <b>irritated</b></p>
+              <p class="p-mail" lang="en">As I said in my previous email, we need this today.</p>
+              <p class="p-mail__tone" data-i18n="problem.tone">Reads as: <b>irritated</b></p>
             </div>
-            <h3>The email that sounds annoyed</h3>
-            <p>You meant to be direct. In English, it lands as cold — and now the conversation is about tone, not the work.</p>
-            <p class="p-card__module">Module 4 · Tone, Register and Writing</p>
+            <h3 data-i18n="problem.c3.title">The email that sounds annoyed</h3>
+            <p data-i18n="problem.c3.text">You meant direct. It landed as cold.</p>
+            <p class="p-card__module" data-i18n="problem.c3.module">Module 4 · Tone, Register and Writing</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ================= 5. What you'll learn ================= -->
-    <section class="section learn" id="learn" aria-labelledby="learn-title">
-      <div class="wrap">
-        <header class="section__head reveal">
-          <p class="eyebrow">What you’ll practice</p>
-          <h2 class="section__title" id="learn-title">Eight things you’ll do <span class="hl">in English, live, with feedback</span></h2>
-        </header>
-        <ol class="learn__list">
-          <li class="reveal"><span><b>Open</b> any update with the point: status, cause, request.</span></li>
-          <li class="reveal"><span><b>Clarify and confirm</b> numbers, dates and decisions before they get lost.</span></li>
-          <li class="reveal"><span><b>Take the floor</b> in international meetings — and interrupt without sounding rude.</span></li>
-          <li class="reveal"><span><b>Adjust</b> tone and register so firm doesn’t read as cold.</span></li>
-          <li class="reveal"><span><b>Give feedback</b> and disagree without damaging the relationship.</span></li>
-          <li class="reveal"><span><b>Deliver</b> difficult messages — delays, safety issues — clearly and calmly.</span></li>
-          <li class="reveal"><span><b>Present</b> a recommendation and hold it under questions.</span></li>
-          <li class="reveal"><span><b>Negotiate</b> priorities and trade-offs with stakeholders who want different things.</span></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ================= 6. Programa: línea de tiempo ================= -->
+    <!-- ================= 5–6. Programa: lo que practicas, módulo a módulo ================= -->
     <section class="section program" id="program" aria-labelledby="program-title">
       <div class="wrap">
         <header class="section__head reveal">
-          <p class="eyebrow">The program</p>
-          <h2 class="section__title" id="program-title">12 modules, <span class="hl">one company, one crisis</span></h2>
-          <p class="section__lead">Everything happens inside Northgate Energy: a delayed project, a safety issue and a community waiting for answers. Each module adds a tool; the last two put them all to work.</p>
+          <p class="eyebrow" data-i18n="program.eyebrow">What you’ll practice</p>
+          <h2 class="section__title" id="program-title" data-i18n="program.title">12 modules, <span class="hl">one company in crisis</span></h2>
+          <p class="section__lead" data-i18n="program.lead">Everything happens inside Northgate Energy: a delayed project, a safety issue and a community waiting for answers.</p>
         </header>
 
-        <!-- [BORRADOR] Descripciones de una línea redactadas a partir del título de cada módulo; validar -->
+        <!-- Acordeón: un módulo abierto a la vez. Los títulos de módulo son los oficiales (en inglés).
+             [BORRADOR] Descripciones redactadas a partir del título; validar. -->
         <ol class="timeline" id="timeline">
-          <li class="timeline__item"><span class="timeline__num">00</span><div><h3>Starting Point</h3><p>Where your English is today, and what you want to change first.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">01</span><div><h3>Get to the Point</h3><p>Lead with the status and the ask; keep the background for later.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">02</span><div><h3>Listen, Clarify, Confirm</h3><p>Catch the detail, ask for what you missed, confirm what was agreed.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">03</span><div><h3>International Meetings</h3><p>Take turns, interrupt, redirect and close a meeting with many accents.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">04</span><div><h3>Tone, Register and Writing</h3><p>Emails and messages that sound the way you mean them.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">05</span><div><h3>Feedback and Disagreement</h3><p>Say “I see it differently” and keep the relationship working.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">06</span><div><h3>Difficult Messages</h3><p>Delays, safety issues, bad news: clear, calm and accountable.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">07</span><div><h3>Presenting Recommendations</h3><p>Structure a recommendation and defend it under questions.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">08</span><div><h3>Negotiating Priorities</h3><p>Trade time, budget and scope with people who want different things.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">09</span><div><h3>High-stakes Audiences</h3><p>Senior leaders, regulators, communities: adjust for who is listening.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">10</span><div><h3>Real Case Clinic</h3><p>Bring a real situation from your work and rehearse it with the group.</p></div></li>
-          <li class="timeline__item"><span class="timeline__num">11</span><div><h3>Integrative Simulation</h3><p>The full Northgate crisis, start to finish, using everything you practiced.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">00</span><h3><button type="button" class="timeline__btn" aria-expanded="true" aria-controls="m0">Starting Point</button></h3><div class="timeline__panel" id="m0"><p data-i18n="m0">Find where your English is today, and what to change first.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">01</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m1">Get to the Point</button></h3><div class="timeline__panel" id="m1"><p data-i18n="m1">Open any update with the point: status, cause, request.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">02</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m2">Listen, Clarify, Confirm</button></h3><div class="timeline__panel" id="m2"><p data-i18n="m2">Clarify and confirm numbers, dates and decisions before they get lost.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">03</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m3">International Meetings</button></h3><div class="timeline__panel" id="m3"><p data-i18n="m3">Take the floor, and interrupt without sounding rude.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">04</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m4">Tone, Register and Writing</button></h3><div class="timeline__panel" id="m4"><p data-i18n="m4">Write emails that sound the way you mean them.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">05</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m5">Feedback and Disagreement</button></h3><div class="timeline__panel" id="m5"><p data-i18n="m5">Disagree and keep the relationship working.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">06</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m6">Difficult Messages</button></h3><div class="timeline__panel" id="m6"><p data-i18n="m6">Deliver delays and safety issues clearly and calmly.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">07</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m7">Presenting Recommendations</button></h3><div class="timeline__panel" id="m7"><p data-i18n="m7">Present a recommendation and hold it under questions.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">08</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m8">Negotiating Priorities</button></h3><div class="timeline__panel" id="m8"><p data-i18n="m8">Trade time, budget and scope with people who want different things.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">09</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m9">High-stakes Audiences</button></h3><div class="timeline__panel" id="m9"><p data-i18n="m9">Adjust for boards, regulators and communities.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">10</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m10">Real Case Clinic</button></h3><div class="timeline__panel" id="m10"><p data-i18n="m10">Rehearse a real situation from your own work.</p></div></li>
+          <li class="timeline__item"><span class="timeline__num" aria-hidden="true">11</span><h3><button type="button" class="timeline__btn" aria-expanded="false" aria-controls="m11">Integrative Simulation</button></h3><div class="timeline__panel" id="m11"><p data-i18n="m11">The full Northgate crisis, start to finish.</p></div></li>
         </ol>
       </div>
     </section>
@@ -276,14 +250,13 @@
     <section class="section check is-dark" id="self-check" aria-labelledby="check-title">
       <div class="wrap check__grid">
         <header class="section__head reveal">
-          <p class="eyebrow">Self-check · 5 questions · 1 minute</p>
-          <h2 class="section__title" id="check-title">Is this course <span class="hl">for you?</span></h2>
-          <p class="section__lead">Honest answer included. If the course isn’t right for you yet, this will tell you — and point you to what is.</p>
-          <p class="check__note">This is a self-check, not a level test. Your answers stay in this browser and are only sent if you register.</p>
+          <p class="eyebrow" data-i18n="check.eyebrow">Self-check · 1 minute</p>
+          <h2 class="section__title" id="check-title" data-i18n="check.title">Is this course <span class="hl">for you?</span></h2>
+          <p class="section__lead" data-i18n="check.lead">An honest answer — even if it’s no.</p>
+          <p class="check__note" data-i18n="check.note">Not a level test. Your answers stay in your browser unless you register.</p>
         </header>
-
         <div class="quiz" id="quiz">
-          <noscript><p class="quiz__noscript">The self-check needs JavaScript. You can still <a href="#enroll">register below</a> — the individual diagnostic call looks at your English in detail.</p></noscript>
+          <noscript><p class="quiz__noscript">The self-check needs JavaScript. You can still <a href="#enroll">register below</a>.</p></noscript>
         </div>
       </div>
     </section>
@@ -292,16 +265,16 @@
     <section class="section session" id="session" aria-labelledby="session-title">
       <div class="wrap">
         <header class="section__head reveal">
-          <p class="eyebrow">Inside a session</p>
-          <h2 class="section__title" id="session-title">60 minutes. <span class="hl">You speak most of them.</span></h2>
-          <p class="section__lead">Every session follows the same loop, led by the instructor with a practice coach in the room. No homework: the practice happens live.</p>
+          <p class="eyebrow" data-i18n="session.eyebrow">Inside a session</p>
+          <h2 class="section__title" id="session-title" data-i18n="session.title">60 minutes. <span class="hl">You speak most of them.</span></h2>
+          <p class="section__lead" data-i18n="session.lead">An instructor and a practice coach. No homework: the practice happens live.</p>
         </header>
-        <ol class="loop">
-          <li class="loop__step reveal"><span class="loop__n">1</span><h3>Model</h3><p>See and hear the move done well, in a Northgate scene.</p></li>
-          <li class="loop__step reveal"><span class="loop__n">2</span><h3>Notice</h3><p>Spot what makes it work: the order, the phrases, the tone.</p></li>
-          <li class="loop__step reveal"><span class="loop__n">3</span><h3>Rehearse</h3><p>Try it in pairs or small groups, with the coach listening.</p></li>
-          <li class="loop__step reveal"><span class="loop__n">4</span><h3>Perform</h3><p>Do it for real in front of the group, under realistic pressure.</p></li>
-          <li class="loop__step reveal"><span class="loop__n">5</span><h3>Feedback</h3><p>Specific, live feedback on every practice — not a grade at the end.</p></li>
+        <ol class="loop" id="loop">
+          <li class="loop__step"><span class="loop__n" aria-hidden="true">1</span><h3 data-i18n="session.s1">Model</h3><p data-i18n="session.s1t">See the move done well.</p></li>
+          <li class="loop__step"><span class="loop__n" aria-hidden="true">2</span><h3 data-i18n="session.s2">Notice</h3><p data-i18n="session.s2t">Spot what makes it work.</p></li>
+          <li class="loop__step"><span class="loop__n" aria-hidden="true">3</span><h3 data-i18n="session.s3">Rehearse</h3><p data-i18n="session.s3t">Try it, with the coach listening.</p></li>
+          <li class="loop__step"><span class="loop__n" aria-hidden="true">4</span><h3 data-i18n="session.s4">Perform</h3><p data-i18n="session.s4t">Do it for real, under pressure.</p></li>
+          <li class="loop__step"><span class="loop__n" aria-hidden="true">5</span><h3 data-i18n="session.s5">Feedback</h3><p data-i18n="session.s5t">Specific feedback, right away.</p></li>
         </ol>
       </div>
     </section>
@@ -314,30 +287,16 @@
                srcset="assets/img/beatriz-chacon-480.webp 480w, assets/img/beatriz-chacon-800.webp 800w"
                sizes="(min-width: 900px) 400px, 80vw"
                width="480" height="480" loading="lazy" decoding="async"
-               alt="Portrait of Beatriz Chacón, smiling, in a beige blazer in an office">
+               alt="Portrait of Beatriz Chacón, smiling, in a beige blazer in an office"
+               data-i18n-attr="alt:instructor.alt">
         </div>
         <div class="reveal">
-          <p class="eyebrow">Your instructor</p>
+          <p class="eyebrow" data-i18n="instructor.eyebrow">Your instructor</p>
           <h2 class="section__title" id="instructor-title">Beatriz Chacón</h2>
-          <p class="instructor__role">CEO and Founder, Everglow Academy</p>
+          <p class="instructor__role" data-i18n="instructor.role">CEO and Founder, Everglow Academy</p>
           <!-- [PENDIENTE] Bio real de Beatriz: experiencia, formación, certificaciones. No inventar. -->
-          <p class="instructor__bio">Beatriz founded Everglow Academy and teaches Leading in English. In every session she works alongside a practice coach, so each participant gets live feedback on every practice.</p>
+          <p class="instructor__bio" data-i18n="instructor.bio">Beatriz founded Everglow Academy and teaches Leading in English, alongside a practice coach — so every practice gets live feedback.</p>
         </div>
-      </div>
-    </section>
-
-    <!-- ================= 10. Instituciones ================= -->
-    <section class="section partners" aria-labelledby="partners-title">
-      <div class="wrap">
-        <h2 class="partners__title reveal" id="partners-title">Institutional partners</h2>
-        <!-- [PENDIENTE] Confirmar permiso de uso de cada logo -->
-        <ul class="partners__list">
-          <li class="partner"><img src="assets/logos/ylai.webp" alt="YLAI — Young Leaders of the Americas Initiative" width="292" height="120" loading="lazy" decoding="async"></li>
-          <li class="partner"><img src="assets/logos/asu.webp" alt="ASU — Arizona State University" width="285" height="120" loading="lazy" decoding="async"></li>
-          <li class="partner"><img src="assets/logos/iesa.webp" alt="IESA" width="120" height="120" loading="lazy" decoding="async"></li>
-          <!-- [PLACEHOLDER] Reemplazar por el logo real de INDELSER (assets/logos/indelser.webp) -->
-          <li class="partner partner--placeholder"><span>INDELSER</span></li>
-        </ul>
       </div>
     </section>
 
@@ -345,26 +304,26 @@
     <section class="section fit" id="fit" aria-labelledby="fit-title">
       <div class="wrap">
         <header class="section__head reveal">
-          <p class="eyebrow">Straight answer</p>
-          <h2 class="section__title" id="fit-title">Who this is for — <span class="hl">and who it isn’t</span></h2>
+          <p class="eyebrow" data-i18n="fit.eyebrow">Straight answer</p>
+          <h2 class="section__title" id="fit-title" data-i18n="fit.title">Who it’s for — <span class="hl">and who it isn’t</span></h2>
         </header>
         <div class="fit__grid">
           <div class="fit__col fit__col--yes reveal">
-            <h3><span class="fit__icon" aria-hidden="true">✓</span> This is for you if</h3>
+            <h3><span class="fit__icon" aria-hidden="true">✓</span> <span data-i18n="fit.yes">For you if</span></h3>
             <ul>
-              <li>You already lead: you manage a team, a project or a business area.</li>
-              <li>Your English is B2–C1: you get by, but not as sharply as in your own language.</li>
-              <li>You work in energy, or with people who do, and English is part of your week.</li>
-              <li>You want to practice live, with feedback, in a small group.</li>
+              <li data-i18n="fit.y1">You already lead a team, a project or an area.</li>
+              <li data-i18n="fit.y2">Your English is B2–C1.</li>
+              <li data-i18n="fit.y3">English is part of your work week.</li>
+              <li data-i18n="fit.y4">You want live practice, with feedback.</li>
             </ul>
           </div>
           <div class="fit__col fit__col--no reveal">
-            <h3><span class="fit__icon" aria-hidden="true">✕</span> This is not for you if</h3>
+            <h3><span class="fit__icon" aria-hidden="true">✕</span> <span data-i18n="fit.no">Not for you if</span></h3>
             <ul>
-              <li>Your English is below B2. You’d spend the sessions translating instead of practicing — <a href="#self-check">take the self-check</a> and we’ll point you to our general program.</li>
-              <li>You’re looking for a leadership course or technical energy training. This is English for people who already do both.</li>
-              <li>You want recorded lessons to watch on your own schedule. Every session is live.</li>
-              <li>You expect to be fluent in 12 weeks. Nobody can honestly promise that; we promise practice and specific feedback.</li>
+              <li data-i18n="fit.n1">Your English is below B2 — <a href="#self-check">take the self-check</a>.</li>
+              <li data-i18n="fit.n2">You want a leadership or technical course.</li>
+              <li data-i18n="fit.n3">You want recorded lessons to watch alone.</li>
+              <li data-i18n="fit.n4">You expect fluency in 12 weeks. Nobody can honestly promise that.</li>
             </ul>
           </div>
         </div>
@@ -375,44 +334,47 @@
     <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="wrap">
         <header class="section__head reveal">
-          <p class="eyebrow">Pricing</p>
-          <h2 class="section__title" id="pricing-title">One price. <span class="hl">Two ways to pay.</span></h2>
+          <p class="eyebrow" data-i18n="price.eyebrow">Pricing</p>
+          <h2 class="section__title" id="pricing-title" data-i18n="price.title">One price. <span class="hl">Two ways to pay.</span></h2>
         </header>
 
-        <div class="pricing__grid">
-          <article class="plan plan--main reveal">
-            <h3 class="plan__name">One payment</h3>
-            <p class="plan__price"><span>$500</span> USD</p>
-            <p class="plan__note">Paid once, before the course starts.</p>
-          </article>
-          <article class="plan reveal">
-            <h3 class="plan__name">Three installments</h3>
-            <p class="plan__price"><span>3 × $175</span> USD</p>
-            <p class="plan__note">$525 in total. <!-- [CONFIRMAR] fechas de cada cuota --> We’ll share the installment dates when we confirm your seat.</p>
-          </article>
-
-          <div class="plan__includes reveal">
-            <h3>Both include</h3>
+        <div class="price-card reveal">
+          <div class="price-card__main">
+            <div class="plan-switch" role="group" aria-label="Payment option" data-i18n-attr="aria-label:price.switch">
+              <button type="button" data-plan="full" aria-pressed="true" data-i18n="price.full">One payment</button>
+              <button type="button" data-plan="split" aria-pressed="false" data-i18n="price.split">3 installments</button>
+            </div>
+            <div class="plan-views" aria-live="polite">
+              <div class="plan-view is-active" data-plan-view="full">
+                <p class="plan-view__price"><span>$500</span> USD</p>
+                <p class="plan-view__note" data-i18n="price.fullNote">Paid once, before the course starts.</p>
+              </div>
+              <div class="plan-view" data-plan-view="split">
+                <p class="plan-view__price"><span>3 × $175</span> USD</p>
+                <p class="plan-view__note" data-i18n="price.splitNote">$525 in total. Dates are in the <a href="terms.html#price">Terms of Use</a>.</p>
+              </div>
+            </div>
+            <a class="btn btn--sun btn--large" href="#enroll" id="plan-cta" data-i18n="price.cta">Enroll with this option</a>
+          </div>
+          <div class="price-card__side">
+            <h3 data-i18n="price.includes">Includes</h3>
             <ul class="checks">
-              <li>An individual diagnostic call before the course</li>
-              <li>22 live sessions of 60 minutes over 12 weeks</li>
-              <li>A group of 8–10, with an instructor and a practice coach</li>
-              <li>One-page materials for every module</li>
-              <li>Live feedback on every practice</li>
-              <li>A certificate with a performance profile across six criteria</li>
+              <li data-i18n="price.i1">An individual diagnostic call</li>
+              <li data-i18n="price.i2">22 live sessions over 12 weeks</li>
+              <li data-i18n="price.i3">A group of 8–10, instructor and coach</li>
+              <li data-i18n="price.i4">One-page materials per module</li>
+              <li data-i18n="price.i5">Live feedback on every practice</li>
+              <li data-i18n="price.i6">A certificate with a six-criteria profile</li>
             </ul>
           </div>
         </div>
 
-        <!-- [CONFIRMAR] Plazo de 24 horas: interpretado como plazo para pagar tras inscribirse -->
-        <div class="howpay reveal">
-          <h3>How payment works</h3>
-          <ol class="howpay__steps">
-            <li><b>Register</b> with the form below. Nothing is charged on this page.</li>
-            <li><b>Send your payment by Zelle</b> within 24 hours to <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a>. Put your full name in the memo.</li>
-            <li><b>We confirm your seat</b> by email and schedule your diagnostic call.</li>
-          </ol>
-        </div>
+        <!-- El plazo de 24 horas viene de los Términos: la academia envía las instrucciones en 24 h -->
+        <ol class="howpay reveal">
+          <li><span data-i18n="price.step1"><b>Register</b> below. Nothing is charged here.</span></li>
+          <li><span data-i18n="price.step2"><b>Within 24 hours</b> we email you the Zelle instructions.</span></li>
+          <li><span data-i18n="price.step3"><b>Your seat is confirmed</b> when your payment arrives.</span></li>
+        </ol>
       </div>
     </section>
 
@@ -420,11 +382,11 @@
     <section class="section enroll" id="enroll" aria-labelledby="enroll-title">
       <div class="wrap enroll__grid">
         <header class="section__head">
-          <p class="eyebrow">Enrollment</p>
-          <h2 class="section__title" id="enroll-title">Save your seat</h2>
-          <p class="section__lead">Groups are 8–10 people. Registering takes a minute; payment comes after, by Zelle.</p>
+          <p class="eyebrow" data-i18n="enroll.eyebrow">Enrollment</p>
+          <h2 class="section__title" id="enroll-title" data-i18n="enroll.title">Save your seat</h2>
+          <p class="section__lead" data-i18n="enroll.lead">Groups of 8–10. Registering takes a minute; payment comes after.</p>
           <!-- [PENDIENTE] Fecha de inicio de la próxima cohorte -->
-          <p class="enroll__cohort"><b>Next cohort:</b> start date to be announced.</p>
+          <p class="enroll__cohort" data-i18n="enroll.cohort"><b>Next cohort:</b> start date to be announced.</p>
         </header>
 
         <div class="form-card">
@@ -432,25 +394,25 @@
             <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
 
             <div class="field">
-              <label for="f-name">Full name</label>
+              <label for="f-name" data-i18n="form.name">Full name</label>
               <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err">
               <p class="field__error" id="f-name-err"></p>
             </div>
 
             <div class="field">
-              <label for="f-email">Email</label>
+              <label for="f-email" data-i18n="form.email">Email</label>
               <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="f-email-err">
               <p class="field__error" id="f-email-err"></p>
             </div>
 
             <div class="field">
-              <label for="f-phone">Phone / WhatsApp <span class="field__hint">with country code</span></label>
+              <label for="f-phone" data-i18n="form.phone">Phone / WhatsApp <span class="field__hint">with country code</span></label>
               <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+58 412 555 0100" required aria-describedby="f-phone-err">
               <p class="field__error" id="f-phone-err"></p>
             </div>
 
             <div class="field">
-              <label for="f-country">Country</label>
+              <label for="f-country" data-i18n="form.country">Country</label>
               <input id="f-country" name="country" type="text" autocomplete="country-name" list="countries" required aria-describedby="f-country-err">
               <datalist id="countries">
                 <option value="Venezuela"><option value="Colombia"><option value="Mexico"><option value="Argentina"><option value="Chile"><option value="Peru"><option value="Ecuador"><option value="Brazil"><option value="Panama"><option value="Trinidad and Tobago"><option value="United States"><option value="Canada"><option value="Spain">
@@ -458,52 +420,51 @@
               <p class="field__error" id="f-country-err"></p>
             </div>
 
+            <!-- El value se envía siempre en inglés (es lo que espera la hoja); solo cambia la etiqueta -->
             <fieldset class="field field--radios" aria-describedby="f-payment-err">
-              <legend>Payment option</legend>
-              <label class="radio"><input type="radio" name="payment" value="One payment — $500 USD" required><span><b>One payment</b> — $500 USD</span></label>
-              <label class="radio"><input type="radio" name="payment" value="3 installments — $175 USD each"><span><b>3 installments</b> — $175 USD each</span></label>
+              <legend data-i18n="form.payment">Payment option</legend>
+              <label class="radio"><input type="radio" name="payment" id="f-pay-full" value="One payment — $500 USD" required><span data-i18n="form.payFull"><b>One payment</b> — $500 USD</span></label>
+              <label class="radio"><input type="radio" name="payment" id="f-pay-split" value="3 installments — $175 USD each"><span data-i18n="form.paySplit"><b>3 installments</b> — $175 USD each</span></label>
               <p class="field__error" id="f-payment-err"></p>
             </fieldset>
 
             <div class="field field--check">
               <label class="consent">
                 <input id="f-terms" name="terms" type="checkbox" value="accepted" required aria-describedby="f-terms-err">
-                <span>I accept the <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+                <span data-i18n="form.terms">I accept the <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
               </label>
               <p class="field__error" id="f-terms-err"></p>
             </div>
 
             <!-- Honeypot antispam: invisible para personas, los bots lo rellenan -->
             <div class="hp" aria-hidden="true">
-              <label for="f-company">Company website</label>
-              <input id="f-company" name="company_website" type="text" tabindex="-1" autocomplete="off">
+              <label for="f-website">Website</label>
+              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
             </div>
 
-            <!-- Resultado del autodiagnóstico, si existe -->
-            <input type="hidden" name="self_check" id="f-selfcheck" value="">
             <p class="form__selfcheck" id="form-selfcheck" hidden></p>
 
             <button class="btn btn--primary btn--large btn--block" type="submit" id="f-submit">
-              <span class="btn__label">Register</span>
+              <span class="btn__label" data-i18n="form.submit">Register</span>
               <span class="btn__spinner" aria-hidden="true"></span>
             </button>
-            <p class="form__fine">No payment is taken here. You’ll pay by Zelle after registering.</p>
+            <p class="form__fine" data-i18n="form.fine">Nothing is charged here. We’ll email you the Zelle instructions.</p>
           </form>
 
-          <!-- Estado de éxito: se muestra al enviar -->
+          <!-- Estado de éxito -->
           <div class="success" id="form-success" hidden tabindex="-1" aria-labelledby="success-title">
             <p class="success__badge" aria-hidden="true">✓</p>
-            <h3 id="success-title">You’re registered<span id="success-name"></span>.</h3>
-            <p>Here’s exactly what happens next:</p>
+            <h3 id="success-title"><span data-i18n="success.title">Registration received</span><span id="success-name"></span>.</h3>
+            <p data-i18n="success.next">Here’s exactly what happens next:</p>
             <ol class="success__steps">
-              <li><b>Within 24 hours:</b> send <span id="success-amount">your payment</span> by Zelle to <b>everglowacademy@gmail.com</b>, with your full name in the memo.</li>
-              <li><b>Once we receive it:</b> we email you to confirm your seat. <!-- [CONFIRMAR] plazo de respuesta del equipo --></li>
-              <li><b>Before the course starts:</b> we schedule your individual diagnostic call.</li>
+              <li data-i18n="success.s1"><b>Within 24 hours:</b> we email you the Zelle payment instructions.</li>
+              <li data-i18n="success.s2"><b>When your payment arrives:</b> we confirm your seat in writing.</li>
+              <li data-i18n="success.s3"><b>Before the course starts:</b> we schedule your individual diagnostic call.</li>
             </ol>
-            <p class="success__help">Questions? Write to <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a>.</p>
+            <p class="success__help" data-i18n="success.help">Don’t see our email? Check your spam folder, or write to <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a>.</p>
           </div>
 
-          <p class="form__fallback">Form not working? <a id="mailto-fallback" href="mailto:everglowacademy@gmail.com?subject=Registration%20%E2%80%94%20Leading%20in%20English">Register by email instead</a>.</p>
+          <p class="form__fallback" data-i18n="form.fallback">Form not working? <a class="js-mailto" href="mailto:everglowacademy@gmail.com?subject=Registration%20%E2%80%94%20Leading%20in%20English">Register by email instead</a>.</p>
         </div>
       </div>
     </section>
@@ -512,46 +473,19 @@
     <section class="section faq" id="faq" aria-labelledby="faq-title">
       <div class="wrap faq__grid">
         <header class="section__head">
-          <p class="eyebrow">FAQ</p>
-          <h2 class="section__title" id="faq-title">Questions, <span class="hl">answered first</span></h2>
+          <p class="eyebrow" data-i18n="faq.eyebrow">FAQ</p>
+          <h2 class="section__title" id="faq-title" data-i18n="faq.title">Questions, <span class="hl">answered first</span></h2>
         </header>
         <div class="faq__list">
-          <details>
-            <summary>Is this a leadership course?</summary>
-            <p>No. It’s an English course for people who already lead. We don’t teach you how to manage; we help you do what you already do — updates, meetings, feedback, hard news — in English, with clarity.</p>
-          </details>
-          <details>
-            <summary>What level of English do I need?</summary>
-            <p>B2 to C1 on the CEFR scale. If you’re not sure, take the <a href="#self-check">1-minute self-check</a>. If it suggests you’re below B2, we’ll recommend our general program instead.</p>
-          </details>
-          <details>
-            <summary>Is it live, or can I watch at my own pace?</summary>
-            <p>It’s 100% live by video call. There are no self-paced lessons: the value is in practicing with people and getting feedback in the moment.</p>
-          </details>
-          <details>
-            <summary>How much time does it take each week?</summary>
-            <p>Two sessions of 60 minutes per week, for 12 weeks — 22 sessions in total. There’s no homework.</p>
-          </details>
-          <details>
-            <summary>How big are the groups?</summary>
-            <p>8 to 10 people, with an instructor and a practice coach, so you speak a lot and get feedback on every practice.</p>
-          </details>
-          <details>
-            <summary>How do I pay?</summary>
-            <p>By Zelle to everglowacademy@gmail.com, after you register. You can pay $500 USD once, or 3 installments of $175 USD ($525 in total). No payment is processed on this website.</p>
-          </details>
-          <details>
-            <summary>What do I get at the end?</summary>
-            <p>A certificate with a performance profile across six criteria, so you can see where you stand — not just that you attended.</p>
-          </details>
-          <details>
-            <summary>Why is it set in an energy company?</summary>
-            <p>Because practice sticks when it feels real. Northgate Energy is fictional, but its problems aren’t: a delayed project, a safety issue and a community waiting for answers. You work through them across the 12 modules.</p>
-          </details>
-          <details>
-            <summary>When does the next group start?</summary>
-            <p>The start date will be announced soon. Register to save your seat and we’ll contact you with the schedule.</p>
-          </details>
+          <details><summary data-i18n="faq.q1">Is this a leadership course?</summary><p data-i18n="faq.a1">No. It’s English for people who already lead: updates, meetings, feedback and hard news — in English, with clarity.</p></details>
+          <details><summary data-i18n="faq.q2">What level of English do I need?</summary><p data-i18n="faq.a2">B2 to C1 on the CEFR scale. Not sure? Take the <a href="#self-check">1-minute self-check</a>.</p></details>
+          <details><summary data-i18n="faq.q3">Is it live? Are sessions recorded?</summary><p data-i18n="faq.a3">It’s 100% live by video call, and sessions are not recorded by default. There are no self-paced lessons.</p></details>
+          <details><summary data-i18n="faq.q4">How much time does it take?</summary><p data-i18n="faq.a4">Two 60-minute sessions a week for 12 weeks — 22 sessions. No homework.</p></details>
+          <details><summary data-i18n="faq.q5">What if I miss a session?</summary><p data-i18n="faq.a5">Week 6 includes a make-up session. To get the certificate, you need to attend at least 17 of the 22 sessions.</p></details>
+          <details><summary data-i18n="faq.q6">How do I pay?</summary><p data-i18n="faq.a6">By Zelle, after you register: $500 USD once, or 3 installments of $175 ($525 in total). Within 24 hours we email you the instructions. Nothing is charged on this website.</p></details>
+          <details><summary data-i18n="faq.q7">What if I need to cancel?</summary><p data-i18n="faq.a7">Cancellations and refunds are explained in our <a href="terms.html#refunds">Terms of Use</a>.</p></details>
+          <details><summary data-i18n="faq.q8">What do I get at the end?</summary><p data-i18n="faq.a8">A certificate with a performance profile across six criteria, when you meet the attendance requirement and complete the final simulation.</p></details>
+          <details><summary data-i18n="faq.q9">When does the next group start?</summary><p data-i18n="faq.a9">The date will be announced soon. Register to save your seat and we’ll send you the schedule.</p></details>
         </div>
       </div>
     </section>
@@ -565,11 +499,11 @@
         <p class="footer__tag">Leading in English — Communication Tools for Global Energy Leaders</p>
       </div>
       <div>
-        <h2 class="footer__h">Contact</h2>
+        <h2 class="footer__h" data-i18n="footer.contact">Contact</h2>
         <p><a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></p>
       </div>
       <div>
-        <h2 class="footer__h">Follow</h2>
+        <h2 class="footer__h" data-i18n="footer.follow">Follow</h2>
         <!-- [PENDIENTE] URLs reales de redes sociales -->
         <ul class="footer__links">
           <li><a href="#" data-pending="instagram">Instagram</a></li>
@@ -579,19 +513,19 @@
       <div>
         <h2 class="footer__h">Legal</h2>
         <ul class="footer__links">
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a></li>
+          <li><a href="terms.html" data-i18n="footer.terms">Terms of Use</a></li>
         </ul>
       </div>
     </div>
-    <div class="wrap"><p class="footer__copy">© 2026 Everglow Academy. All rights reserved.</p></div>
+    <div class="wrap"><p class="footer__copy" data-i18n="footer.copy">© 2026 Everglow Academy. All rights reserved.</p></div>
   </footer>
 
   <!-- Barra de inscripción pegajosa: aparece al pasar el hero -->
   <div class="enroll-bar" id="enroll-bar" aria-hidden="true">
     <div class="wrap enroll-bar__inner">
-      <p class="enroll-bar__price"><b>$500 USD</b> <span>or 3 × $175</span></p>
-      <a class="btn btn--primary btn--small" href="#enroll" tabindex="-1">Enroll now</a>
+      <p class="enroll-bar__price"><b>$500 USD</b> <span data-i18n="bar.alt">or 3 × $175</span></p>
+      <a class="btn btn--primary btn--small" href="#enroll" tabindex="-1" data-i18n="cta.enroll">Enroll now</a>
     </div>
   </div>
 </body>

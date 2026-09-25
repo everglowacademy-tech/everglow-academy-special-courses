@@ -3,6 +3,7 @@
 // Todo respeta prefers-reduced-motion: si está activo, se muestra el estado
 // final sin animar.
 // =========================================================================
+import { initI18n, t } from "./i18n.js";
 import { initQuiz } from "./quiz.js";
 import { initForm } from "./form.js";
 
@@ -117,9 +118,11 @@ function initRewrite() {
       swap();
     }
     if (animate) setReplies(mode);
-    status.textContent = mode === "clear"
-      ? `Point-first version. ${wordsBefore} words before the point. The room replies: ${REPLIES.clear.map((r) => r[1]).join(" ")}`
-      : `Buried version. ${wordsBefore} words before the point. The room replies: ${REPLIES.buried.map((r) => r[1]).join(" ")}`;
+    status.textContent = t("hero.status", {
+      mode: t(mode === "clear" ? "hero.clear" : "hero.buried"),
+      n: wordsBefore,
+      replies: REPLIES[mode].map((r) => r[1]).join(" "),
+    });
   }
 
   // Estado inicial: versión larga ya partida en palabras, sin animar
@@ -186,62 +189,109 @@ function initCounters() {
 }
 
 /* ---------------------------------------------------------------------------
-   4. Línea de tiempo + barra de lectura (un solo manejador de scroll)
+   4. Programa: acordeón de módulos (uno abierto a la vez) + línea que se
+      dibuja con el scroll + barra de lectura. Un solo manejador de scroll.
    --------------------------------------------------------------------------- */
+function initProgram() {
+  const timeline = $("#timeline");
+  if (!timeline) return;
+  const items = $$(".timeline__item", timeline);
+  const buttons = $$(".timeline__btn", timeline);
+
+  const open = (idx, focus = false) => {
+    items.forEach((it, i) => {
+      const on = i === idx;
+      it.classList.toggle("is-open", on);
+      $(".timeline__btn", it).setAttribute("aria-expanded", String(on));
+    });
+    if (focus) buttons[idx].focus();
+  };
+  buttons.forEach((b, i) => {
+    b.addEventListener("click", () => open(b.getAttribute("aria-expanded") === "true" ? -1 : i));
+    // Flechas arriba/abajo para moverse entre módulos
+    b.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const next = (i + (e.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
+        buttons[next].focus();
+      }
+    });
+  });
+  open(0);
+
+  const line = document.createElement("span");
+  line.className = "timeline__progress";
+  line.setAttribute("aria-hidden", "true");
+  timeline.prepend(line);
+}
+
 function initScrollEffects() {
   const bar = $(".read-progress span");
   const timeline = $("#timeline");
   const items = timeline ? $$(".timeline__item", timeline) : [];
-  let now = null;
-
-  if (timeline) {
-    const line = document.createElement("span");
-    line.className = "timeline__progress";
-    line.setAttribute("aria-hidden", "true");
-    timeline.prepend(line);
-
-    // Indicador grande del módulo activo, junto al título (solo escritorio)
-    now = document.createElement("p");
-    now.className = "program__now";
-    now.setAttribute("aria-hidden", "true");
-    now.innerHTML = "<b>00</b><span></span>";
-    $("#program .section__head")?.append(now);
-  }
-
-  let active = -1;
   let ticking = false;
+  let passed = -1;
 
   function update() {
     ticking = false;
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - innerHeight;
+    const max = document.documentElement.scrollHeight - innerHeight;
     if (bar) bar.style.setProperty("--progress", max > 0 ? (scrollY / max).toFixed(4) : 0);
-
     if (!timeline) return;
+    // La línea avanza con el scroll y va "encendiendo" los números que deja atrás
     const r = timeline.getBoundingClientRect();
-    const focus = innerHeight * 0.55;
+    const focus = innerHeight * 0.6;
     const p = Math.min(1, Math.max(0, (focus - r.top) / r.height));
     timeline.style.setProperty("--timeline", p.toFixed(4));
-
     let idx = -1;
     items.forEach((it, i) => { if (it.getBoundingClientRect().top < focus) idx = i; });
-    if (idx !== active) {
-      active = idx;
-      items.forEach((it, i) => {
-        it.classList.toggle("is-active", i === idx);
-        it.classList.toggle("is-passed", i < idx);
-      });
-      if (now && idx >= 0) {
-        $("b", now).textContent = $(".timeline__num", items[idx]).textContent;
-        $("span", now).textContent = $("h3", items[idx]).textContent;
-      }
+    if (idx !== passed) {
+      passed = idx;
+      items.forEach((it, i) => it.classList.toggle("is-passed", i <= idx));
     }
   }
-
   const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll, { passive: true });
   update();
+}
+
+/* ---------------------------------------------------------------------------
+   4b. Precio: selector "un pago / 3 cuotas". Al elegir, también marca la
+       opción en el formulario.
+   --------------------------------------------------------------------------- */
+function initPricing() {
+  const buttons = $$("[data-plan]");
+  const views = $$("[data-plan-view]");
+  const cta = $("#plan-cta");
+  if (!buttons.length) return;
+  let plan = "full";
+  const show = (p) => {
+    plan = p;
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.plan === p)));
+    views.forEach((v) => v.classList.toggle("is-active", v.dataset.planView === p));
+  };
+  buttons.forEach((b) => b.addEventListener("click", () => show(b.dataset.plan)));
+  cta?.addEventListener("click", () => {
+    const radio = document.getElementById(plan === "full" ? "f-pay-full" : "f-pay-split");
+    if (radio) { radio.checked = true; radio.dispatchEvent(new Event("change", { bubbles: true })); }
+  });
+  show("full");
+}
+
+/* ---------------------------------------------------------------------------
+   4c. Sesión: los cinco pasos se encienden en orden al entrar en pantalla
+   --------------------------------------------------------------------------- */
+function initLoop() {
+  const loop = $("#loop");
+  if (!loop) return;
+  const steps = $$(".loop__step", loop);
+  if (reduceMotion || !("IntersectionObserver" in window)) { steps.forEach((s) => s.classList.add("is-lit")); return; }
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    steps.forEach((s, i) => setTimeout(() => s.classList.add("is-lit"), 200 + i * 320));
+    io.disconnect();
+  }, { threshold: 0.4 });
+  io.observe(loop);
 }
 
 /* ---------------------------------------------------------------------------
@@ -267,24 +317,15 @@ function initEnrollBar() {
   if (form) new IntersectionObserver(([e]) => { formVisible = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(form);
 }
 
-/* ---------------------------------------------------------------------------
-   6. Logos institucionales: en pantallas táctiles (sin hover) se encienden
-      al entrar en pantalla
-   --------------------------------------------------------------------------- */
-function initPartners() {
-  if (!window.matchMedia("(hover: none)").matches || !("IntersectionObserver" in window)) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => e.target.classList.toggle("is-lit", e.isIntersecting));
-  }, { threshold: 1, rootMargin: "-25% 0px -25% 0px" });
-  $$(".partner").forEach((el) => io.observe(el));
-}
-
 // Módulo type="module": se ejecuta con el DOM ya listo
+initI18n(); // primero: el resto pinta textos con el idioma ya decidido
 initRewrite();
 initReveal();
 initCounters();
+initProgram();
 initScrollEffects();
+initPricing();
+initLoop();
 initEnrollBar();
-initPartners();
 const quiz = initQuiz();
 initForm(quiz);

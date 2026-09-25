@@ -7,16 +7,19 @@ Es un sitio estático hecho con HTML, CSS y JavaScript puros, sin build y sin de
 ```
 site/
 ├── index.html          ← la página (todo el texto visible está aquí)
-├── privacy.html        ← PROVISIONAL, falta el texto legal
-├── terms.html          ← PROVISIONAL, falta el texto legal
+├── privacy.html        ← Política de privacidad (EN + ES)
+├── terms.html          ← Términos de uso (EN + ES)
 ├── css/
 │   ├── tokens.css      ← colores, tipografías y espaciados de la marca (lo único que hay que tocar para cambiar el look)
 │   └── main.css        ← estilos de las secciones
 ├── js/
-│   ├── config.js       ← endpoint del formulario, correo, enlace al programa general
-│   ├── main.js         ← animaciones, hero interactivo, barra pegajosa, línea de tiempo
-│   ├── quiz.js         ← autodiagnóstico "Is this course for you?"
-│   └── form.js         ← validación y envío del formulario
+│   ├── config.js       ← endpoint y token del formulario, versión de términos, correo
+│   ├── lang.js         ← idioma elegido (EN/ES) y selector
+│   ├── i18n.js         ← TODOS los textos en español de la landing
+│   ├── main.js         ← animaciones, hero interactivo, programa, precio, barra pegajosa
+│   ├── quiz.js         ← autodiagnóstico (preguntas en inglés y español)
+│   ├── form.js         ← validación y envío al Apps Script
+│   └── legal.js        ← idioma e índice de las páginas legales
 ├── fonts/              ← fuentes locales (woff2)
 ├── assets/             ← logos y foto
 ├── og-image.png        ← imagen para compartir en redes (1200×630)
@@ -36,11 +39,11 @@ Busca `$500`, `$175` y `$525` en `site/index.html`: todos están ahí. Las ubica
 2. El JSON-LD (`"price": "500"`), en el `<head>`
 3. El hero (`price-tag`)
 4. La sección Pricing (las dos tarjetas, más **$525 en total** en la de cuotas)
-5. Los dos radios del formulario (`value="One payment — $500 USD"` y `value="3 installments — $175 USD each"`)
+5. Los dos radios del formulario (`value="One payment — $500 USD"` y `value="3 installments — $175 USD each"`). El `value` es lo que recibe la hoja; si lo cambias, avisa al script
 6. El FAQ "How do I pay?"
 7. La barra pegajosa de abajo (`enroll-bar`)
 
-Si cambias el texto de un radio de pago, cambia también la clave correspondiente en `PAYMENT_AMOUNTS` dentro de `site/js/config.js`. De ahí sale el monto que aparece en el mensaje de éxito.
+Y en español, las mismas cifras en `site/js/i18n.js` (busca `$500`, `$175`, `$525`). En los términos: `site/terms.html`, sección 3, en los dos idiomas.
 
 ### Poner la fecha de inicio
 
@@ -50,11 +53,20 @@ En `site/index.html`:
 
 ### Cambiar textos
 
-Todo el texto visible está en `site/index.html`, ordenado por secciones y marcado con comentarios `<!-- ===== 4. The problem ===== -->`. Hay dos excepciones:
-- Las **respuestas de la videollamada del hero** están en `REPLIES`, al principio de `site/js/main.js`. Los dos mensajes del hero (versión larga y versión clara) están en los atributos `data-buried` y `data-clear` de `index.html`. Las palabras entre `[[ ]]` son "el punto" que se resalta en amarillo.
-- Las **preguntas del autodiagnóstico** y sus umbrales están en `QUESTIONS` y `MIN_LEVEL_SCORE`, dentro de `site/js/quiz.js`.
+- **Inglés:** en `site/index.html`, ordenado por secciones.
+- **Español:** en `site/js/i18n.js`, en el objeto `ES`. Cada texto tiene la misma clave que su `data-i18n="…"` en el HTML. Si cambias un texto en inglés, cambia también su versión en español.
+- **Textos que genera el JavaScript** (autodiagnóstico, errores del formulario, mensajes de envío): objeto `STRINGS` de `site/js/i18n.js`, con `en` y `es`.
+- **Preguntas del autodiagnóstico:** `QUESTIONS` en `site/js/quiz.js`, cada una en los dos idiomas.
+- **Lo que NO se traduce a propósito:** el nombre del curso, los títulos de los módulos, el mensaje de ejemplo del hero y las respuestas de la sala. Son el inglés que se practica en el curso.
 
-Busca `[BORRADOR]`, `[PENDIENTE]` y `[CONFIRMAR]` para encontrar todo lo que falta validar.
+Busca `[BORRADOR]` y `[PENDIENTE]` para encontrar lo que falta validar.
+
+### Idioma
+
+- Arriba a la derecha hay un selector **EN / ES**. La elección se guarda en el navegador.
+- La primera vez, la página usa el idioma del navegador (español si el navegador está en español).
+- Puedes forzar el idioma con un enlace: `https://tu-sitio/?lang=es` o `?lang=en`. Sirve para anuncios dirigidos a un público concreto.
+- Google indexa la versión en inglés (la que está en el HTML).
 
 ### Cambiar colores o tipografías
 
@@ -65,50 +77,35 @@ Para usar **Gilroy** y **Placard Next** (las oficiales), las instrucciones está
 
 ## Conectar el formulario
 
-### Con Google Apps Script (el que ya usan)
-
-1. Abre tu proyecto de Apps Script → **Implementar → Gestionar implementaciones** y copia la **URL de la aplicación web** (termina en `/exec`).
-2. Pégala en `site/js/config.js`:
-   ```js
-   export const FORM_ENDPOINT = "https://script.google.com/macros/s/XXXXXXXX/exec";
-   export const FORM_MODE = "no-cors";
-   ```
-3. El formulario envía estos campos como `application/x-www-form-urlencoded`:
-   `name, email, phone, country, payment, terms, self_check, course, submitted_at, page`.
-   Tu script los lee con `e.parameter.name`, `e.parameter.email`, etc.
-
-Si tu script actual espera otros nombres de campo, ajusta el script o el objeto `payload` en `site/js/form.js`. Este es un ejemplo mínimo de `doPost` compatible:
+Ya está conectado a tu Google Apps Script, en `site/js/config.js`:
 
 ```js
-function doPost(e) {
-  const p = e.parameter;
-  const sheet = SpreadsheetApp.openById("ID_DE_TU_HOJA").getSheetByName("Inscripciones");
-  sheet.appendRow([new Date(), p.name, p.email, p.phone, p.country, p.payment, p.self_check, p.course, p.page]);
-  MailApp.sendEmail("everglowacademy@gmail.com", "Nueva inscripción: " + p.name,
-    `Nombre: ${p.name}\nEmail: ${p.email}\nTeléfono: ${p.phone}\nPaís: ${p.country}\nPago: ${p.payment}\n\n${p.self_check}`);
-  return ContentService.createTextOutput("ok");
-}
+export const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycby…/exec";
+export const FORM_TOKEN = "everglow-2026-CAMBIA-ESTO"; // debe ser idéntico al TOKEN del script
+export const TERMS_VERSION = "2026-09-25";            // súbela cada vez que cambies los términos
 ```
 
-> **Importante:** Apps Script no devuelve cabeceras CORS, así que el navegador no puede leer su respuesta (`no-cors`). La página da el envío por bueno si la red no falla. Si el script tiene un error interno, la persona verá el mensaje de éxito igual. Revisa la hoja los primeros días.
+La página envía un `POST` con `Content-Type: text/plain` (así se evita el bloqueo CORS de Apps Script) y este JSON:
 
-### Con Formspree o un webhook (Make, Zapier, n8n)
+| Campo | Contenido |
+|---|---|
+| `token` | El de `config.js` |
+| `name`, `email`, `phone`, `country` | Lo que escribió la persona |
+| `payment` | Siempre en inglés: `One payment — $500 USD` o `3 installments — $175 USD each` |
+| `selfCheck` | Resultado del autodiagnóstico (en el idioma de la página), o `""` |
+| `website` | Honeypot: siempre vacío si es una persona |
+| `source` | `landing`, o `utm_source / utm_medium / utm_campaign` si el enlace trae UTM |
+| `lang` | `en` o `es`: idioma en que se inscribió |
+| `termsVersion` | Versión de los términos aceptados |
+| `termsAcceptedAt` | Fecha y hora de aceptación (ISO) |
 
-```js
-export const FORM_ENDPOINT = "https://formspree.io/f/TU_ID"; // o la URL del webhook
-export const FORM_MODE = "cors";
-```
-En modo `cors` la página sí comprueba la respuesta. Si no es 2xx, muestra el error y ofrece enviar por correo.
+Los tres últimos campos son nuevos: tu script los ignora hasta que les añadas columnas. **Conviene guardarlos**: son la prueba de qué términos aceptó cada persona y cuándo.
 
-### Sin backend
+La página espera que el script responda `{"ok": true}`. Si responde `{"ok": false, "error": "…"}` o falla la red, muestra un error y ofrece enviar la inscripción por correo, ya escrita.
 
-Si `FORM_ENDPOINT` está vacío, al enviar aparece un enlace **mailto** a everglowacademy@gmail.com con los datos ya escritos. El enlace "Form not working? Register by email instead" funciona siempre.
+> **Sobre el token:** se ve en el código de la página, así que no es una contraseña. Solo filtra envíos automáticos que no vienen de la landing. El honeypot (`website`) es la segunda barrera.
 
-### Antispam
-
-El formulario tiene un campo trampa invisible (`company_website`). Si llega relleno, la página finge el éxito y no envía nada.
-
----
+**Cómo probarlo cuando publiques:** inscríbete tú con datos reales en la página publicada y confirma que la fila aparece en la hoja y que llega el correo de aviso. Yo no pude probarlo, porque este entorno no tiene acceso a script.google.com.
 
 ## Publicar en Netlify
 
@@ -127,9 +124,9 @@ El formulario tiene un campo trampa invisible (`company_website`). Si llega rell
 
 ## Qué se revisó
 
-- **Lighthouse móvil**, con servidor local sin compresión: Performance 97 · Accessibility 100 · Best Practices 100 · SEO 100. En Netlify debería mejorar, porque comprime y cachea.
-- **axe-core** (WCAG 2.2 AA): 0 violaciones, revisando también los estados de error del formulario, el resultado del quiz y la versión clara del hero.
+- **Lighthouse móvil** (en español), con servidor local sin compresión: Performance 97 · Accessibility 100 · Best Practices 100 · SEO 100.
+- **axe-core** (WCAG 2.2 AA): 0 violaciones en inglés y en español, también con errores del formulario, resultado del quiz y precio en cuotas; 0 en las páginas legales.
 - **Teclado:** todo se recorre con Tab; el switch se activa con Espacio y el FAQ con Enter.
 - **`prefers-reduced-motion`:** todo aparece sin animación y el switch cambia al instante.
 - **390 px:** sin desplazamiento horizontal.
-- **Formulario:** validación, foco en el primer error, carga, éxito, honeypot y respaldo mailto, probados con un endpoint simulado.
+- **Formulario:** validación, foco en el primer error, carga, éxito, error del servidor (`ok:false`) y respaldo mailto, probados con un endpoint simulado que responde como tu script. El cambio de idioma a mitad del formulario re-traduce los errores.

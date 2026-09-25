@@ -4,25 +4,213 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy — Everglow Academy</title>
-  <meta name="robots" content="noindex">
+  <meta name="description" content="How Everglow Academy collects, uses and protects your personal information.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
+  <script>
+    (function () {
+      var d = document.documentElement, l = null;
+      d.classList.add("js");
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("eg-lang"); } catch (e) {}
+      if (!l) l = (navigator.language || "").slice(0, 2) === "es" ? "es" : "en";
+      if (l === "es") { d.lang = "es"; d.classList.add("i18n-pending"); setTimeout(function () { d.classList.remove("i18n-pending"); }, 1200); }
+    })();
+  </script>
+  <script type="module" src="js/legal.js"></script>
 </head>
-<body>
-  <!-- [PENDIENTE] Página provisional. Reemplazar por el texto legal real (ver PENDIENTES.md). -->
+<body class="legal-page">
+  <!-- Texto legal: borrador revisado por la academia. Lo resaltado en amarillo (.todo) son
+       decisiones pendientes: cámbialas y quita la clase "todo" (ver PENDIENTES.md). -->
   <header class="site-header">
     <div class="wrap site-header__inner">
-      <a class="brand" href="index.html"><img src="assets/logos/everglow.svg" alt="Everglow Academy — home" width="859" height="227"></a>
+      <a class="brand" href="index.html"><img src="assets/logos/everglow.svg" alt="Everglow Academy" width="859" height="227"></a>
+      <div class="site-header__end">
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-set-lang="en" aria-pressed="true"><span aria-hidden="true">EN</span><span class="sr-only">English</span></button>
+          <button type="button" data-set-lang="es" aria-pressed="false"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></button>
+        </div>
+        <a class="btn btn--ghost btn--small" href="index.html" data-lang-text='{"en":"Back to the course","es":"Volver al curso"}'>Back to the course</a>
+      </div>
     </div>
   </header>
-  <main class="section">
-    <div class="wrap" style="max-width: 44rem">
-      <h1 class="section__title">Privacy Policy</h1>
-      <p class="section__lead">This page is being prepared.</p>
-      <p>If you have a question about how Everglow Academy handles your information or the terms of the course, write to us at <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a> and we’ll reply personally.</p>
-      <p><a href="index.html">← Back to the course</a></p>
+
+  <main id="main">
+    <!-- ===================== ENGLISH ===================== -->
+    <div class="wrap legal" data-lang-block="en" lang="en">
+      <nav class="legal__toc" aria-label="On this page">
+        <p class="legal__toc-title">On this page</p>
+        <ol>
+          <li><a href="#who">Who we are</a></li>
+          <li><a href="#collect">What we collect</a></li>
+          <li><a href="#use">Why we use it</a></li>
+          <li><a href="#share">Who can see it</a></li>
+          <li><a href="#recordings">Class recordings</a></li>
+          <li><a href="#retention">How long we keep it</a></li>
+          <li><a href="#choices">Your choices</a></li>
+          <li><a href="#children">Children</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#changes">Changes</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+      <article class="legal__body">
+        <p class="eyebrow">Everglow Academy</p>
+        <h1 class="section__title">Privacy Policy</h1>
+        <p class="legal__date">Last updated: <span class="todo">25 September 2026</span></p>
+
+        <h2 id="who">Who we are</h2>
+        <p>Everglow Academy (<span class="todo">[LEGAL ENTITY NAME]</span>, <span class="todo">[RIF / registration number]</span>) is an online English academy based in Caracas, Venezuela. We can be reached at <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a>.</p>
+        <p>This policy explains what personal information we collect when you visit this page or enroll in one of our programs, how we use it, and what you can ask us to do with it.</p>
+
+        <h2 id="collect">What we collect</h2>
+        <p><b>When you submit the enrollment form:</b> full name, email address, phone or WhatsApp number, country of residence, and the payment option you selected.</p>
+        <p><b>If you complete the self-assessment on this page:</b> your answers and the result. These stay in your browser unless you submit the form, in which case the result is sent with your enrollment.</p>
+        <p><b>When you become a participant:</b> your diagnostic results, attendance, assessment scores, written and spoken work produced during the program, and any notes your instructor records about your progress.</p>
+        <p><b>When you pay:</b> we receive confirmation of your Zelle transfer, including the name and email associated with the sending account. <b>We never ask for and never store card numbers, bank account numbers or passwords.</b></p>
+        <p><b>When you browse this page:</b> basic technical data collected by our hosting provider, such as IP address, browser type and pages visited.</p>
+
+        <h2 id="use">Why we use it</h2>
+        <ul>
+          <li>To process your enrollment and contact you with payment instructions.</li>
+          <li>To run the program: group placement, diagnostic calls, feedback and certificates.</li>
+          <li>To answer your questions by email or WhatsApp.</li>
+          <li>To send you information about our programs, if you agreed to receive it. You can unsubscribe at any time.</li>
+          <li>To improve the course, using results in aggregate form.</li>
+          <li>To meet accounting and legal obligations.</li>
+        </ul>
+
+        <h2 id="share">Who can see your information</h2>
+        <p>Only the people who need it to deliver the program:</p>
+        <ul>
+          <li>Everglow Academy staff, instructors and practice coaches assigned to your group.</li>
+          <li>Service providers that host our tools: Google (Workspace, Forms, Sheets, Meet, Apps Script), our website host, and our email provider. Their servers may be located outside your country.</li>
+          <li>Anyone required by law.</li>
+        </ul>
+        <p><b>Corporate participants:</b> if your employer pays for the program, we share attendance and aggregate results with them. Individual assessment details are shared with your employer only if you were told so before the program started.</p>
+        <p><b>We do not sell your personal information and we do not share it with advertisers.</b></p>
+
+        <h2 id="recordings">Class recordings</h2>
+        <p>Sessions are not recorded by default. When a session or a practice task is recorded, we tell the group in advance, ask for consent, use it only for feedback and instructor training, keep it in a restricted folder, and delete it within <span class="todo">30</span> days. You can take part without being recorded.</p>
+
+        <h2 id="retention">How long we keep it</h2>
+        <ul>
+          <li>Enrollment requests that do not become an enrollment: <span class="todo">12</span> months.</li>
+          <li>Participant records, results and certificates: <span class="todo">5</span> years, so we can reissue a certificate if you ask.</li>
+          <li>Accounting records: the period required by Venezuelan law.</li>
+          <li>Marketing contacts: until you unsubscribe.</li>
+        </ul>
+
+        <h2 id="choices">Your choices</h2>
+        <p>You can ask us to access, correct or delete your personal information, to stop sending you marketing messages, or to receive a copy of your course records. Write to <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a> and we will reply within <span class="todo">10</span> business days. To protect you, we may ask you to confirm your identity.</p>
+
+        <h2 id="children">Children</h2>
+        <p>Our programs are for adults. We do not knowingly collect information from anyone under 18.</p>
+
+        <h2 id="security">Security</h2>
+        <p>We use accounts protected by passwords and two-step verification, restricted access to files, and reputable providers. No system is completely secure, so we cannot promise absolute protection. If a breach affects your data, we will tell you.</p>
+
+        <h2 id="changes">Changes</h2>
+        <p>If we update this policy, we will change the date above and post the new version on this page.</p>
+
+        <h2 id="contact">Contact</h2>
+        <p>Questions about this policy: <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></p>
+      </article>
+    </div>
+
+    <!-- ===================== ESPAÑOL ===================== -->
+    <div class="wrap legal" data-lang-block="es" lang="es" hidden>
+      <nav class="legal__toc" aria-label="En esta página">
+        <p class="legal__toc-title">En esta página</p>
+        <ol>
+          <li><a href="#es-who">Quiénes somos</a></li>
+          <li><a href="#es-collect">Qué datos recogemos</a></li>
+          <li><a href="#es-use">Para qué los usamos</a></li>
+          <li><a href="#es-share">Quién puede verlos</a></li>
+          <li><a href="#es-recordings">Grabaciones de clase</a></li>
+          <li><a href="#es-retention">Cuánto tiempo los guardamos</a></li>
+          <li><a href="#es-choices">Tus opciones</a></li>
+          <li><a href="#es-children">Menores de edad</a></li>
+          <li><a href="#es-security">Seguridad</a></li>
+          <li><a href="#es-changes">Cambios</a></li>
+          <li><a href="#es-contact">Contacto</a></li>
+        </ol>
+      </nav>
+      <article class="legal__body">
+        <p class="eyebrow">Everglow Academy</p>
+        <h1 class="section__title">Política de privacidad</h1>
+        <p class="legal__date">Última actualización: <span class="todo">25 de septiembre de 2026</span></p>
+
+        <h2 id="es-who">Quiénes somos</h2>
+        <p>Everglow Academy (<span class="todo">[RAZÓN SOCIAL]</span>, <span class="todo">[RIF / número de registro]</span>) es una academia de inglés en línea con sede en Caracas, Venezuela. Puedes escribirnos a <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a>.</p>
+        <p>Esta política explica qué datos personales recogemos cuando visitas esta página o te inscribes en uno de nuestros programas, cómo los usamos y qué puedes pedirnos que hagamos con ellos.</p>
+
+        <h2 id="es-collect">Qué datos recogemos</h2>
+        <p><b>Cuando envías el formulario de inscripción:</b> nombre completo, correo electrónico, número de teléfono o WhatsApp, país de residencia y la forma de pago que elegiste.</p>
+        <p><b>Si completas el autodiagnóstico de esta página:</b> tus respuestas y el resultado. Se quedan en tu navegador, salvo que envíes el formulario; en ese caso, el resultado se envía con tu inscripción.</p>
+        <p><b>Cuando te conviertes en participante:</b> tus resultados diagnósticos, asistencia, calificaciones, los trabajos escritos y orales que produzcas durante el programa y las notas que tu instructor registre sobre tu progreso.</p>
+        <p><b>Cuando pagas:</b> recibimos la confirmación de tu transferencia por Zelle, incluido el nombre y el correo asociados a la cuenta que envía. <b>Nunca pedimos ni guardamos números de tarjeta, números de cuenta bancaria ni contraseñas.</b></p>
+        <p><b>Cuando navegas esta página:</b> datos técnicos básicos que recoge nuestro proveedor de alojamiento, como la dirección IP, el tipo de navegador y las páginas visitadas.</p>
+
+        <h2 id="es-use">Para qué los usamos</h2>
+        <ul>
+          <li>Para procesar tu inscripción y enviarte las instrucciones de pago.</li>
+          <li>Para desarrollar el programa: asignación de grupo, llamadas diagnósticas, feedback y certificados.</li>
+          <li>Para responder tus preguntas por correo o WhatsApp.</li>
+          <li>Para enviarte información sobre nuestros programas, si aceptaste recibirla. Puedes darte de baja cuando quieras.</li>
+          <li>Para mejorar el curso, usando los resultados de forma agregada.</li>
+          <li>Para cumplir obligaciones contables y legales.</li>
+        </ul>
+
+        <h2 id="es-share">Quién puede ver tus datos</h2>
+        <p>Solo las personas que los necesitan para impartir el programa:</p>
+        <ul>
+          <li>El personal de Everglow Academy, los instructores y los coaches de práctica asignados a tu grupo.</li>
+          <li>Los proveedores que alojan nuestras herramientas: Google (Workspace, Forms, Sheets, Meet, Apps Script), nuestro proveedor de alojamiento web y nuestro proveedor de correo. Sus servidores pueden estar fuera de tu país.</li>
+          <li>Quien la ley nos obligue.</li>
+        </ul>
+        <p><b>Participantes corporativos:</b> si tu empleador paga el programa, compartimos con él la asistencia y los resultados agregados. Los detalles de tu evaluación individual solo se comparten con tu empleador si se te informó antes de empezar el programa.</p>
+        <p><b>No vendemos tus datos personales ni los compartimos con anunciantes.</b></p>
+
+        <h2 id="es-recordings">Grabaciones de clase</h2>
+        <p>Por defecto, las sesiones no se graban. Cuando se graba una sesión o una práctica, avisamos al grupo con antelación, pedimos consentimiento, la usamos solo para dar feedback y formar instructores, la guardamos en una carpeta de acceso restringido y la eliminamos en un plazo de <span class="todo">30</span> días. Puedes participar sin ser grabado.</p>
+
+        <h2 id="es-retention">Cuánto tiempo los guardamos</h2>
+        <ul>
+          <li>Solicitudes de inscripción que no se concretan: <span class="todo">12</span> meses.</li>
+          <li>Expedientes, resultados y certificados de participantes: <span class="todo">5</span> años, para poder reemitir un certificado si lo pides.</li>
+          <li>Registros contables: el plazo que exija la ley venezolana.</li>
+          <li>Contactos de marketing: hasta que te des de baja.</li>
+        </ul>
+
+        <h2 id="es-choices">Tus opciones</h2>
+        <p>Puedes pedirnos acceder, corregir o eliminar tus datos personales, dejar de recibir mensajes de marketing o recibir una copia de tus registros del curso. Escríbenos a <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a> y te responderemos en un plazo de <span class="todo">10</span> días hábiles. Para protegerte, podemos pedirte que confirmes tu identidad.</p>
+
+        <h2 id="es-children">Menores de edad</h2>
+        <p>Nuestros programas son para adultos. No recogemos a sabiendas datos de menores de 18 años.</p>
+
+        <h2 id="es-security">Seguridad</h2>
+        <p>Usamos cuentas protegidas con contraseña y verificación en dos pasos, acceso restringido a los archivos y proveedores reconocidos. Ningún sistema es completamente seguro, así que no podemos prometer una protección absoluta. Si una filtración afecta tus datos, te lo diremos.</p>
+
+        <h2 id="es-changes">Cambios</h2>
+        <p>Si actualizamos esta política, cambiaremos la fecha de arriba y publicaremos la nueva versión en esta página.</p>
+
+        <h2 id="es-contact">Contacto</h2>
+        <p>Preguntas sobre esta política: <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></p>
+      </article>
     </div>
   </main>
+
+  <footer class="site-footer site-footer--slim">
+    <div class="wrap footer__row">
+      <img class="footer__logo" src="assets/logos/everglow-white.svg" alt="Everglow Academy" width="859" height="227" loading="lazy">
+      <ul class="footer__links footer__links--row">
+        <li><a href="index.html" data-lang-text='{"en":"Leading in English","es":"Leading in English"}'>Leading in English</a></li>
+        <li><a href="terms.html" data-lang-text='{"en":"Terms of Use","es":"Términos de uso"}'>Terms of Use</a></li>
+        <li><a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
 </body>
 </html>

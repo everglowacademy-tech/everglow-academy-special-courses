@@ -1,31 +1,47 @@
 // =========================================================================
-// form.js — inscripción: validación en vivo, antispam, envío y respaldo mailto.
-// El endpoint y el modo de envío se configuran en config.js.
+// form.js — inscripción: validación en vivo, antispam, envío al Apps Script
+// y respaldo por correo. La URL, el token y la versión de términos están en config.js.
 // =========================================================================
-import { FORM_ENDPOINT, FORM_MODE, CONTACT_EMAIL, PAYMENT_AMOUNTS } from "./config.js";
-import { summarize } from "./quiz.js";
+import { FORM_ENDPOINT, FORM_TOKEN, TERMS_VERSION, CONTACT_EMAIL } from "./config.js";
+import { summarize, labelOf } from "./quiz.js";
+import { t } from "./i18n.js";
+import { currentLang } from "./lang.js";
 
-// Reglas de validación: devuelven el mensaje de error o "" si está bien
+// Envío al Apps Script. Content-Type text/plain a propósito: con application/json
+// el navegador hace una petición OPTIONS previa que Apps Script no responde (CORS).
+async function sendEnrollment(payload) {
+  const res = await fetch(FORM_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(Object.assign({ token: FORM_TOKEN }, payload)),
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || "error");
+  return data;
+}
+
+// Origen de la visita: utm_source (y utm_campaign) si vienen en la URL; si no, "landing"
+function sourceFromUrl() {
+  try {
+    const p = new URLSearchParams(location.search);
+    const src = p.get("utm_source");
+    if (!src) return "landing";
+    return [src, p.get("utm_medium"), p.get("utm_campaign")].filter(Boolean).join(" / ");
+  } catch { return "landing"; }
+}
+
+// Reglas de validación: devuelven la clave del error o "" si está bien
 const RULES = {
-  name: (v) => {
-    if (!v.trim()) return "Please enter your full name.";
-    if (v.trim().split(/\s+/).length < 2) return "Please enter your first and last name.";
-    return "";
-  },
-  email: (v) => {
-    if (!v.trim()) return "Please enter your email.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())) return "That email doesn’t look right. Check for typos, e.g. name@company.com.";
-    return "";
-  },
+  name: (v) => (!v.trim() ? "form.err.name" : v.trim().split(/\s+/).length < 2 ? "form.err.name2" : ""),
+  email: (v) => (!v.trim() ? "form.err.email" : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "form.err.email2" : ""),
   phone: (v) => {
-    if (!v.trim()) return "Please enter a phone or WhatsApp number.";
+    if (!v.trim()) return "form.err.phone";
     const digits = v.replace(/\D/g, "");
-    if (!/^\+?[\d\s().-]+$/.test(v.trim()) || digits.length < 8 || digits.length > 15) return "Include your country code, e.g. +58 412 555 0100.";
-    return "";
+    return !/^\+?[\d\s().-]+$/.test(v.trim()) || digits.length < 8 || digits.length > 15 ? "form.err.phone2" : "";
   },
-  country: (v) => (v.trim().length < 2 ? "Please enter your country." : ""),
-  payment: (_, form) => (form.querySelector('input[name="payment"]:checked') ? "" : "Choose how you’d like to pay."),
-  terms: (_, form) => (form.querySelector("#f-terms").checked ? "" : "Please accept the Terms of Use and the Privacy Policy to continue."),
+  country: (v) => (v.trim().length < 2 ? "form.err.country" : ""),
+  payment: (_, form) => (form.querySelector('input[name="payment"]:checked') ? "" : "form.err.payment"),
+  terms: (_, form) => (form.querySelector("#f-terms").checked ? "" : "form.err.terms"),
 };
 
 export function initForm(quiz) {
@@ -34,25 +50,24 @@ export function initForm(quiz) {
   const status = document.getElementById("form-status");
   const submit = document.getElementById("f-submit");
   const success = document.getElementById("form-success");
-  const selfField = document.getElementById("f-selfcheck");
   const selfNote = document.getElementById("form-selfcheck");
-  const mailtoLink = document.getElementById("mailto-fallback");
+  const fallback = document.querySelector(".form__fallback");
 
   // ---- Autodiagnóstico adjunto ----
-  function syncSelfCheck(result) {
-    selfField.value = summarize(result);
-    if (!result) { selfNote.hidden = true; return; }
+  let includeSelfCheck = true;
+  function syncSelfCheck() {
+    const r = quiz?.get?.();
+    if (!r || !includeSelfCheck) { selfNote.hidden = true; return; }
     selfNote.hidden = false;
-    selfNote.innerHTML = "";
-    selfNote.append(`Your self-check result (“${result.label}”) will be sent with your registration. `);
+    selfNote.textContent = `${t("form.selfcheck", { label: labelOf(r) })} `;
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.textContent = "Don’t include it";
-    btn.addEventListener("click", () => { selfField.value = ""; selfNote.hidden = true; });
+    btn.textContent = t("form.selfcheckRemove");
+    btn.addEventListener("click", () => { includeSelfCheck = false; syncSelfCheck(); });
     selfNote.append(btn);
   }
-  syncSelfCheck(quiz?.get?.());
-  quiz?.onChange?.(syncSelfCheck);
+  quiz?.onChange?.(() => { includeSelfCheck = true; syncSelfCheck(); });
+  syncSelfCheck();
 
   // ---- Validación por campo ----
   const fieldEls = {
@@ -64,21 +79,23 @@ export function initForm(quiz) {
     terms: form.querySelector("#f-terms"),
   };
   const errEl = (key) => document.getElementById(`f-${key}-err`);
+  const errors = {}; // clave del error mostrado por campo (para re-traducirlo)
 
   function validate(key) {
     const el = fieldEls[key];
-    const msg = RULES[key](el.value ?? "", form);
-    errEl(key).textContent = msg;
+    const errKey = RULES[key](el.value ?? "", form);
+    errors[key] = errKey;
+    errEl(key).textContent = errKey ? t(errKey) : "";
     if (key === "payment") {
-      el.classList.toggle("is-invalid", !!msg);
-      form.querySelectorAll('input[name="payment"]').forEach((r) => r.setAttribute("aria-invalid", String(!!msg)));
+      el.classList.toggle("is-invalid", !!errKey);
+      form.querySelectorAll('input[name="payment"]').forEach((r) => r.setAttribute("aria-invalid", String(!!errKey)));
     } else {
-      el.setAttribute("aria-invalid", String(!!msg));
+      el.setAttribute("aria-invalid", String(!!errKey));
     }
-    return !msg;
+    return !errKey;
   }
 
-  // Valida al salir del campo; después, en cada cambio (sin molestar mientras se escribe la primera vez)
+  // Valida al salir del campo; después, en cada cambio
   ["name", "email", "phone", "country"].forEach((key) => {
     const el = fieldEls[key];
     el.addEventListener("blur", () => { if (el.value || el.classList.contains("is-touched")) { el.classList.add("is-touched"); validate(key); } });
@@ -87,72 +104,90 @@ export function initForm(quiz) {
   form.querySelectorAll('input[name="payment"]').forEach((r) => r.addEventListener("change", () => { validate("payment"); updateMailto(); }));
   fieldEls.terms.addEventListener("change", () => validate("terms"));
 
-  // ---- Respaldo sin backend: mailto prellenado con lo que haya escrito ----
+  // ---- Datos ----
   function data() {
     const fd = new FormData(form);
+    const get = (k) => (fd.get(k) || "").toString().trim();
+    const r = quiz?.get?.();
     return {
-      name: (fd.get("name") || "").toString().trim(),
-      email: (fd.get("email") || "").toString().trim(),
-      phone: (fd.get("phone") || "").toString().trim(),
-      country: (fd.get("country") || "").toString().trim(),
-      payment: (fd.get("payment") || "").toString(),
-      terms: fd.get("terms") ? "accepted" : "",
-      self_check: (fd.get("self_check") || "").toString(),
-      company_website: (fd.get("company_website") || "").toString(),
+      name: get("name"),
+      email: get("email"),
+      phone: get("phone"),
+      country: get("country"),
+      payment: get("payment"),                 // siempre en inglés: "One payment — $500 USD" o "3 installments — $175 USD each"
+      selfCheck: includeSelfCheck ? summarize(r) : "",
+      website: get("website"),                 // honeypot
+      source: sourceFromUrl(),
+      lang: currentLang(),                     // idioma en que se llenó el formulario
+      termsVersion: TERMS_VERSION,             // versión de los términos aceptados
+      termsAcceptedAt: new Date().toISOString(),
     };
   }
+
+  // ---- Respaldo sin backend: mailto prellenado ----
   function mailtoHref() {
     const d = data();
     const body = [
-      "Hello Everglow Academy,",
+      t("mail.intro"),
       "",
-      "I’d like to register for Leading in English: Communication Tools for Global Energy Leaders.",
-      "",
-      `Full name: ${d.name}`,
-      `Email: ${d.email}`,
-      `Phone / WhatsApp: ${d.phone}`,
-      `Country: ${d.country}`,
-      `Payment option: ${d.payment}`,
-      d.self_check ? `\n${d.self_check}` : "",
+      `${t("mail.name")}: ${d.name}`,
+      `${t("mail.email")}: ${d.email}`,
+      `${t("mail.phone")}: ${d.phone}`,
+      `${t("mail.country")}: ${d.country}`,
+      `${t("mail.payment")}: ${d.payment}`,
+      d.selfCheck ? `\n${d.selfCheck}` : "",
     ].join("\n");
-    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Registration — Leading in English")}&body=${encodeURIComponent(body)}`;
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(t("mail.subject"))}&body=${encodeURIComponent(body)}`;
   }
-  function updateMailto() { mailtoLink.href = mailtoHref(); }
+  // El enlace se vuelve a crear al cambiar de idioma, por eso se busca cada vez
+  function updateMailto() { document.querySelectorAll(".js-mailto").forEach((a) => (a.href = mailtoHref())); }
   updateMailto();
 
   // ---- Estados ----
+  let loading = false;
   function setLoading(on) {
+    loading = on;
     submit.disabled = on;
     submit.classList.toggle("is-loading", on);
-    submit.querySelector(".btn__label").textContent = on ? "Sending…" : "Register";
+    submit.querySelector(".btn__label").textContent = on ? t("form.sending") : t("form.submit");
     form.setAttribute("aria-busy", String(on));
+  }
+
+  let statusKey = null; // para re-traducir el mensaje de estado
+  function showStatus(key, vars) {
+    statusKey = key ? [key, vars] : null;
+    status.innerHTML = key ? t(key, vars) : "";
   }
 
   function showSuccess(d) {
     const first = d.name.split(/\s+/)[0];
     document.getElementById("success-name").textContent = first ? `, ${first}` : "";
-    document.getElementById("success-amount").textContent = PAYMENT_AMOUNTS[d.payment] || "your payment";
     form.hidden = true;
-    mailtoLink.parentElement.hidden = true;
+    fallback.hidden = true;
     success.hidden = false;
     success.focus();
     success.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
-  function showError(html) {
-    status.innerHTML = html;
-  }
+  // ---- Cambio de idioma: re-traduce errores y estados visibles ----
+  document.addEventListener("langchange", () => {
+    Object.entries(errors).forEach(([k, errKey]) => { errEl(k).textContent = errKey ? t(errKey) : ""; });
+    if (statusKey) showStatus(statusKey[0], { ...statusKey[1], mailto: mailtoHref() });
+    if (!loading) submit.querySelector(".btn__label").textContent = t("form.submit");
+    syncSelfCheck();
+    updateMailto();
+  });
 
   // ---- Envío ----
   form.addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    status.textContent = "";
+    if (loading) return;
+    showStatus(null);
 
-    const keys = Object.keys(RULES);
-    const bad = keys.filter((k) => !validate(k));
+    const bad = Object.keys(RULES).filter((k) => !validate(k));
     ["name", "email", "phone", "country"].forEach((k) => fieldEls[k].classList.add("is-touched"));
     if (bad.length) {
-      status.textContent = bad.length === 1 ? "Please fix 1 field below." : `Please fix ${bad.length} fields below.`;
+      showStatus(bad.length === 1 ? "form.fix1" : "form.fixN", { n: bad.length });
       const first = fieldEls[bad[0]];
       (first.matches("fieldset") ? first.querySelector("input") : first).focus();
       return;
@@ -161,37 +196,22 @@ export function initForm(quiz) {
     const d = data();
 
     // Honeypot relleno: fingimos éxito y no enviamos nada
-    if (d.company_website) { showSuccess(d); return; }
+    if (d.website) { showSuccess(d); return; }
 
-    // Sin endpoint configurado: el respaldo es el correo
     if (!FORM_ENDPOINT) {
-      showError(`Online registration isn’t connected yet. <a href="${mailtoHref()}">Send your registration by email</a> — it’s already filled in.`);
-      status.querySelector("a").focus();
+      showStatus("form.noEndpoint", { mailto: mailtoHref() });
+      status.querySelector("a")?.focus();
       return;
     }
 
     setLoading(true);
-    const payload = new URLSearchParams({
-      name: d.name, email: d.email, phone: d.phone, country: d.country,
-      payment: d.payment, terms: d.terms, self_check: d.self_check,
-      course: "Leading in English", submitted_at: new Date().toISOString(),
-      page: location.href,
-    });
-
     try {
-      const res = await fetch(FORM_ENDPOINT, {
-        method: "POST",
-        mode: FORM_MODE,
-        body: payload,
-        headers: FORM_MODE === "cors" ? { Accept: "application/json" } : undefined,
-      });
-      // En "no-cors" la respuesta es opaca: si la red no falló, la damos por buena
-      if (FORM_MODE === "cors" && !res.ok) throw new Error(`HTTP ${res.status}`);
+      await sendEnrollment(d);
       showSuccess(d);
     } catch (err) {
       console.error("Registration failed:", err);
-      showError(`We couldn’t send your registration. Check your connection and try again, or <a href="${mailtoHref()}">send it by email</a> — it’s already filled in.`);
-      status.querySelector("a").focus();
+      showStatus("form.failed", { mailto: mailtoHref() });
+      status.querySelector("a")?.focus();
     } finally {
       setLoading(false);
     }

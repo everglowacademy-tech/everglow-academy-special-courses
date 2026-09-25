@@ -4,25 +4,242 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Terms of Use — Everglow Academy</title>
-  <meta name="robots" content="noindex">
+  <meta name="description" content="Terms of use and enrollment for Leading in English, by Everglow Academy.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
+  <script>
+    (function () {
+      var d = document.documentElement, l = null;
+      d.classList.add("js");
+      try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("eg-lang"); } catch (e) {}
+      if (!l) l = (navigator.language || "").slice(0, 2) === "es" ? "es" : "en";
+      if (l === "es") { d.lang = "es"; d.classList.add("i18n-pending"); setTimeout(function () { d.classList.remove("i18n-pending"); }, 1200); }
+    })();
+  </script>
+  <script type="module" src="js/legal.js"></script>
 </head>
-<body>
-  <!-- [PENDIENTE] Página provisional. Reemplazar por el texto legal real (ver PENDIENTES.md). -->
+<body class="legal-page">
+  <!-- Texto legal: borrador revisado por la academia. Lo resaltado en amarillo (.todo) son
+       decisiones pendientes: cámbialas y quita la clase "todo" (ver PENDIENTES.md).
+       Si cambias el texto, actualiza TERMS_VERSION en js/config.js. -->
   <header class="site-header">
     <div class="wrap site-header__inner">
-      <a class="brand" href="index.html"><img src="assets/logos/everglow.svg" alt="Everglow Academy — home" width="859" height="227"></a>
+      <a class="brand" href="index.html"><img src="assets/logos/everglow.svg" alt="Everglow Academy" width="859" height="227"></a>
+      <div class="site-header__end">
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-set-lang="en" aria-pressed="true"><span aria-hidden="true">EN</span><span class="sr-only">English</span></button>
+          <button type="button" data-set-lang="es" aria-pressed="false"><span aria-hidden="true">ES</span><span class="sr-only">Español</span></button>
+        </div>
+        <a class="btn btn--ghost btn--small" href="index.html" data-lang-text='{"en":"Back to the course","es":"Volver al curso"}'>Back to the course</a>
+      </div>
     </div>
   </header>
-  <main class="section">
-    <div class="wrap" style="max-width: 44rem">
-      <h1 class="section__title">Terms of Use</h1>
-      <p class="section__lead">This page is being prepared.</p>
-      <p>If you have a question about how Everglow Academy handles your information or the terms of the course, write to us at <a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a> and we’ll reply personally.</p>
-      <p><a href="index.html">← Back to the course</a></p>
+
+  <main id="main">
+    <!-- ===================== ENGLISH ===================== -->
+    <div class="wrap legal" data-lang-block="en" lang="en">
+      <nav class="legal__toc" aria-label="On this page">
+        <p class="legal__toc-title">On this page</p>
+        <ol>
+          <li><a href="#what">What you are buying</a></li>
+          <li><a href="#enrollment">Enrollment and confirmation</a></li>
+          <li><a href="#price">Price and payment</a></li>
+          <li><a href="#refunds">Cancellations and refunds</a></li>
+          <li><a href="#attendance">Attendance and certificate</a></li>
+          <li><a href="#rescheduling">Rescheduling</a></li>
+          <li><a href="#responsibilities">Your responsibilities</a></li>
+          <li><a href="#materials">Course materials</a></li>
+          <li><a href="#recordings">Recordings</a></li>
+          <li><a href="#promise">What we promise</a></li>
+          <li><a href="#corporate">Corporate enrollments</a></li>
+          <li><a href="#liability">Liability</a></li>
+          <li><a href="#changes">Changes to these terms</a></li>
+          <li><a href="#law">Governing law</a></li>
+        </ol>
+      </nav>
+      <article class="legal__body">
+        <p class="eyebrow">Everglow Academy</p>
+        <h1 class="section__title">Terms of Use and Enrollment</h1>
+        <p class="legal__date">Last updated: <span class="todo">25 September 2026</span></p>
+        <p>By submitting the enrollment form, you accept these terms.</p>
+
+        <h2 id="what">1. What you are buying</h2>
+        <p><b>Leading in English: Communication Tools for Global Energy Leaders</b> is a live online program of 22 sessions of 60 minutes over 12 weeks, in groups of 8 to 10 participants, at CEFR level B2–C1. It includes an individual diagnostic call, all course materials, live feedback, and a certificate of completion for participants who meet the attendance and performance requirements.</p>
+        <p>It is a language program. It is not leadership training, technical training, or a qualification recognized by any government or university.</p>
+
+        <h2 id="enrollment">2. Enrollment and confirmation</h2>
+        <p>Submitting the form is a request, not a confirmed place. Your place is confirmed when we receive your payment (or your first installment) and send you a written confirmation. Places are limited to <span class="todo">10</span> per group and assigned in order of payment.</p>
+
+        <h2 id="price">3. Price and payment</h2>
+        <ul>
+          <li>One-time payment: <b>$500 USD</b>.</li>
+          <li>Or three monthly payments of <b>$175 USD</b> (<span class="todo">525</span> USD in total), due before the program starts and in weeks <span class="todo">5</span> and <span class="todo">9</span>.</li>
+          <li>Payment is made by <b>Zelle to everglowacademy@gmail.com</b>. We will send instructions within 24 hours of your enrollment request.</li>
+          <li>Prices are in US dollars. Any bank or transfer fee is paid by you.</li>
+          <li>If an installment is more than <span class="todo">7</span> days late, we may pause your participation until it is paid. Certificates are issued only after full payment.</li>
+        </ul>
+
+        <h2 id="refunds">4. Cancellations and refunds</h2>
+        <ul>
+          <li><b>Before the program starts:</b> full refund if you cancel at least <span class="todo">5</span> days before the first session.</li>
+          <li><b>After the program starts:</b> <span class="todo">no refunds are issued, because your place in a small group cannot be resold.</span> If you have a serious reason (illness, work emergency), write to us and we will offer you a place in the next cohort instead.</li>
+          <li><b>If we cancel:</b> if we do not reach the minimum of <span class="todo">6</span> participants, or if we cancel for any other reason, you receive a full refund or a place in the next cohort, whichever you prefer.</li>
+          <li>Refunds are made by the same method used for payment, within <span class="todo">15</span> business days.</li>
+        </ul>
+
+        <h2 id="attendance">5. Attendance, participation and certificate</h2>
+        <ul>
+          <li>The program is live. Recordings are not a substitute for attendance.</li>
+          <li>To receive the certificate you need to attend at least <b>17 of the 22 sessions</b> and complete the final simulation with a performance of “Effective” or higher in at least five of the six assessment criteria.</li>
+          <li>Week 6 is a flex week with a make-up session for missed content.</li>
+          <li>If you miss more than <span class="todo">5</span> sessions, you may finish the program but the certificate will not be issued.</li>
+        </ul>
+
+        <h2 id="rescheduling">6. Rescheduling</h2>
+        <p>Session days and times are agreed with the group before the program starts. We may reschedule a session for a justified reason, with as much notice as possible, and we will offer an alternative date. Individual sessions are not rescheduled for individual absences.</p>
+
+        <h2 id="responsibilities">7. Your responsibilities</h2>
+        <ul>
+          <li>Provide accurate information when you enroll.</li>
+          <li>Have a device, a stable internet connection and a place where you can speak.</li>
+          <li>Take part respectfully. We may remove, without refund, any participant who behaves in a discriminatory, threatening or disruptive way toward the group or the team.</li>
+          <li>Keep confidential anything your peers share during the sessions. Everyone is expected to do the same for you.</li>
+        </ul>
+
+        <h2 id="materials">8. Course materials</h2>
+        <p>All materials, scenarios, exercises and assessment tools are the property of Everglow Academy. They are for your personal use during and after the program. You may not copy, publish, resell or use them to teach others without our written permission.</p>
+
+        <h2 id="recordings">9. Recordings</h2>
+        <p>You may not record sessions without the written consent of everyone present. When Everglow records a session, we follow what is described in the <a href="privacy.html#recordings">Privacy Policy</a>.</p>
+
+        <h2 id="promise">10. What we promise and what we don’t</h2>
+        <p>We commit to delivering the program as described, with qualified instructors and structured feedback. We cannot guarantee a specific level of English, a CEFR certification, a promotion or any professional outcome: results depend on your participation and practice.</p>
+
+        <h2 id="corporate">11. Corporate enrollments</h2>
+        <p>When a company pays for a group, these terms apply to participants, and the agreement signed with the company prevails on price, invoicing, cancellations and reporting.</p>
+
+        <h2 id="liability">12. Liability</h2>
+        <p>Our liability is limited to the amount you paid for the program. We are not responsible for internet or device problems on your side, or for events beyond our control.</p>
+
+        <h2 id="changes">13. Changes to these terms</h2>
+        <p>We may update these terms. Changes do not affect a program you have already paid for.</p>
+
+        <h2 id="law">14. Governing law</h2>
+        <p>These terms are governed by the laws of the Bolivarian Republic of Venezuela. Any dispute will be resolved before the courts of <span class="todo">Caracas</span>.</p>
+
+        <h2 id="contact">Contact</h2>
+        <p><a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></p>
+      </article>
+    </div>
+
+    <!-- ===================== ESPAÑOL ===================== -->
+    <div class="wrap legal" data-lang-block="es" lang="es" hidden>
+      <nav class="legal__toc" aria-label="En esta página">
+        <p class="legal__toc-title">En esta página</p>
+        <ol>
+          <li><a href="#es-what">Qué estás comprando</a></li>
+          <li><a href="#es-enrollment">Inscripción y confirmación</a></li>
+          <li><a href="#es-price">Precio y pago</a></li>
+          <li><a href="#es-refunds">Cancelaciones y reembolsos</a></li>
+          <li><a href="#es-attendance">Asistencia y certificado</a></li>
+          <li><a href="#es-rescheduling">Cambios de horario</a></li>
+          <li><a href="#es-responsibilities">Tus responsabilidades</a></li>
+          <li><a href="#es-materials">Materiales del curso</a></li>
+          <li><a href="#es-recordings">Grabaciones</a></li>
+          <li><a href="#es-promise">Qué prometemos</a></li>
+          <li><a href="#es-corporate">Inscripciones corporativas</a></li>
+          <li><a href="#es-liability">Responsabilidad</a></li>
+          <li><a href="#es-changes">Cambios en estos términos</a></li>
+          <li><a href="#es-law">Ley aplicable</a></li>
+        </ol>
+      </nav>
+      <article class="legal__body">
+        <p class="eyebrow">Everglow Academy</p>
+        <h1 class="section__title">Términos de uso e inscripción</h1>
+        <p class="legal__date">Última actualización: <span class="todo">25 de septiembre de 2026</span></p>
+        <p>Al enviar el formulario de inscripción, aceptas estos términos.</p>
+
+        <h2 id="es-what">1. Qué estás comprando</h2>
+        <p><b>Leading in English: Communication Tools for Global Energy Leaders</b> es un programa en línea y en vivo de 22 sesiones de 60 minutos a lo largo de 12 semanas, en grupos de 8 a 10 participantes, de nivel MCER B2–C1. Incluye una llamada diagnóstica individual, todos los materiales del curso, feedback en vivo y un certificado de finalización para quienes cumplan los requisitos de asistencia y desempeño.</p>
+        <p>Es un programa de idioma. No es una formación en liderazgo, ni una formación técnica, ni una titulación reconocida por ningún gobierno o universidad.</p>
+
+        <h2 id="es-enrollment">2. Inscripción y confirmación</h2>
+        <p>Enviar el formulario es una solicitud, no un cupo confirmado. Tu cupo queda confirmado cuando recibimos tu pago (o tu primera cuota) y te enviamos una confirmación por escrito. Los cupos están limitados a <span class="todo">10</span> por grupo y se asignan por orden de pago.</p>
+
+        <h2 id="es-price">3. Precio y pago</h2>
+        <ul>
+          <li>Pago único: <b>$500 USD</b>.</li>
+          <li>O tres pagos mensuales de <b>$175 USD</b> (<span class="todo">525</span> USD en total), que vencen antes de que empiece el programa y en las semanas <span class="todo">5</span> y <span class="todo">9</span>.</li>
+          <li>El pago se hace por <b>Zelle a everglowacademy@gmail.com</b>. Te enviaremos las instrucciones en un plazo de 24 horas desde tu solicitud de inscripción.</li>
+          <li>Los precios están en dólares estadounidenses. Cualquier comisión bancaria o de transferencia corre por tu cuenta.</li>
+          <li>Si una cuota se retrasa más de <span class="todo">7</span> días, podemos pausar tu participación hasta que se pague. Los certificados se emiten solo después del pago completo.</li>
+        </ul>
+
+        <h2 id="es-refunds">4. Cancelaciones y reembolsos</h2>
+        <ul>
+          <li><b>Antes de que empiece el programa:</b> reembolso total si cancelas al menos <span class="todo">5</span> días antes de la primera sesión.</li>
+          <li><b>Después de que empiece el programa:</b> <span class="todo">no se hacen reembolsos, porque tu cupo en un grupo pequeño no se puede revender.</span> Si tienes un motivo serio (enfermedad, emergencia laboral), escríbenos y te ofreceremos un cupo en la siguiente cohorte.</li>
+          <li><b>Si nosotros cancelamos:</b> si no alcanzamos el mínimo de <span class="todo">6</span> participantes, o si cancelamos por cualquier otro motivo, recibes el reembolso total o un cupo en la siguiente cohorte, lo que prefieras.</li>
+          <li>Los reembolsos se hacen por el mismo medio de pago, en un plazo de <span class="todo">15</span> días hábiles.</li>
+        </ul>
+
+        <h2 id="es-attendance">5. Asistencia, participación y certificado</h2>
+        <ul>
+          <li>El programa es en vivo. Las grabaciones no sustituyen la asistencia.</li>
+          <li>Para recibir el certificado necesitas asistir al menos a <b>17 de las 22 sesiones</b> y completar la simulación final con un desempeño de “Effective” o superior en al menos cinco de los seis criterios de evaluación.</li>
+          <li>La semana 6 es una semana flexible, con una sesión de recuperación del contenido perdido.</li>
+          <li>Si faltas a más de <span class="todo">5</span> sesiones, puedes terminar el programa, pero no se emitirá el certificado.</li>
+        </ul>
+
+        <h2 id="es-rescheduling">6. Cambios de horario</h2>
+        <p>Los días y horarios de las sesiones se acuerdan con el grupo antes de empezar el programa. Podemos reprogramar una sesión por un motivo justificado, con el mayor aviso posible, y ofreceremos una fecha alternativa. Las sesiones no se reprograman por ausencias individuales.</p>
+
+        <h2 id="es-responsibilities">7. Tus responsabilidades</h2>
+        <ul>
+          <li>Dar información correcta al inscribirte.</li>
+          <li>Tener un dispositivo, una conexión a internet estable y un lugar donde puedas hablar.</li>
+          <li>Participar con respeto. Podemos retirar, sin reembolso, a cualquier participante que se comporte de forma discriminatoria, amenazante o disruptiva con el grupo o con el equipo.</li>
+          <li>Mantener la confidencialidad de lo que tus compañeros compartan en las sesiones. Se espera que todos hagan lo mismo contigo.</li>
+        </ul>
+
+        <h2 id="es-materials">8. Materiales del curso</h2>
+        <p>Todos los materiales, escenarios, ejercicios y herramientas de evaluación son propiedad de Everglow Academy. Son para tu uso personal durante y después del programa. No puedes copiarlos, publicarlos, revenderlos ni usarlos para enseñar a otros sin nuestro permiso por escrito.</p>
+
+        <h2 id="es-recordings">9. Grabaciones</h2>
+        <p>No puedes grabar las sesiones sin el consentimiento por escrito de todas las personas presentes. Cuando Everglow graba una sesión, sigue lo descrito en la <a href="privacy.html#recordings">Política de privacidad</a>.</p>
+
+        <h2 id="es-promise">10. Qué prometemos y qué no</h2>
+        <p>Nos comprometemos a impartir el programa como se describe, con instructores cualificados y feedback estructurado. No podemos garantizar un nivel específico de inglés, una certificación MCER, un ascenso ni ningún resultado profesional: los resultados dependen de tu participación y tu práctica.</p>
+
+        <h2 id="es-corporate">11. Inscripciones corporativas</h2>
+        <p>Cuando una empresa paga por un grupo, estos términos se aplican a los participantes, y el acuerdo firmado con la empresa prevalece en cuanto a precio, facturación, cancelaciones y reportes.</p>
+
+        <h2 id="es-liability">12. Responsabilidad</h2>
+        <p>Nuestra responsabilidad se limita al monto que pagaste por el programa. No somos responsables de problemas de internet o de dispositivos de tu lado, ni de hechos fuera de nuestro control.</p>
+
+        <h2 id="es-changes">13. Cambios en estos términos</h2>
+        <p>Podemos actualizar estos términos. Los cambios no afectan a un programa que ya hayas pagado.</p>
+
+        <h2 id="es-law">14. Ley aplicable</h2>
+        <p>Estos términos se rigen por las leyes de la República Bolivariana de Venezuela. Cualquier disputa se resolverá ante los tribunales de <span class="todo">Caracas</span>.</p>
+
+        <h2 id="es-contact">Contacto</h2>
+        <p><a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></p>
+      </article>
     </div>
   </main>
+
+  <footer class="site-footer site-footer--slim">
+    <div class="wrap footer__row">
+      <img class="footer__logo" src="assets/logos/everglow-white.svg" alt="Everglow Academy" width="859" height="227" loading="lazy">
+      <ul class="footer__links footer__links--row">
+        <li><a href="index.html">Leading in English</a></li>
+        <li><a href="privacy.html" data-lang-text='{"en":"Privacy Policy","es":"Política de privacidad"}'>Privacy Policy</a></li>
+        <li><a href="mailto:everglowacademy@gmail.com">everglowacademy@gmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
 </body>
 </html>

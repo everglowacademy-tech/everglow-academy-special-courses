@@ -1,222 +1,218 @@
 // =========================================================================
-// quiz.js — autodiagnóstico "Is this course for you?"
-// Funciona sin backend: el resultado se guarda en localStorage y el
-// formulario lo adjunta a la inscripción.
+// quiz.js — autodiagnóstico "Is this course for you?" (bilingüe).
+// Funciona sin backend: el resultado se guarda en localStorage (solo los
+// índices de las respuestas) y el formulario lo adjunta a la inscripción.
 // =========================================================================
 import { CONTACT_EMAIL, GENERAL_PROGRAM_URL, SELF_CHECK_KEY } from "./config.js";
+import { t } from "./i18n.js";
+import { currentLang } from "./lang.js";
 
-// Cada opción suma puntos de nivel (lvl, 0–3). "lead: false" marca que la persona
-// aún no lidera. "focus" es el área donde más ganaría, si la elige.
+// lvl: puntos de nivel (0–3). lead: false = aún no lidera. focus: área donde más ganaría.
 // [BORRADOR] Preguntas y umbrales: validar con el equipo académico.
+const FOCUS = {
+  details: { en: "Catching and confirming details — numbers, dates, names.", es: "Captar y confirmar detalles: cifras, fechas, nombres." },
+  point: { en: "Opening with the point: status, cause, request.", es: "Abrir con lo importante: estado, causa, petición." },
+  script: { en: "Speaking without a script when the moment comes.", es: "Hablar sin guion cuando llega el momento." },
+  clarify: { en: "Asking for clarification without feeling exposed.", es: "Pedir aclaraciones sin sentirte expuesto." },
+  tone: { en: "Delivering bad news with the right tone.", es: "Dar malas noticias con el tono adecuado." },
+};
+
 const QUESTIONS = [
   {
-    q: "What best describes your role today?",
+    q: { en: "What best describes your role today?", es: "¿Qué describe mejor tu rol hoy?" },
     options: [
-      { t: "I manage a team, a project or a business area.", lead: true },
-      { t: "I’m a director or an executive.", lead: true },
-      { t: "I’m not in a leadership role yet.", lead: false },
+      { t: { en: "I manage a team, a project or a business area.", es: "Dirijo un equipo, un proyecto o un área de negocio." }, lead: true },
+      { t: { en: "I’m a director or an executive.", es: "Soy director(a) o ejecutivo(a)." }, lead: true },
+      { t: { en: "I’m not in a leadership role yet.", es: "Todavía no tengo un rol de liderazgo." }, lead: false },
     ],
   },
   {
-    q: "In a video call with native English speakers, you…",
+    q: { en: "In a video call with native English speakers, you…", es: "En una videollamada con hablantes nativos de inglés…" },
     options: [
-      { t: "Follow almost everything, including side comments and jokes.", lvl: 3 },
-      { t: "Get the main points, but miss some details.", lvl: 2, focus: "Catching and confirming details — numbers, dates, names." },
-      { t: "Often lose the thread and need to check afterwards.", lvl: 0 },
+      { t: { en: "Follow almost everything, including side comments and jokes.", es: "Sigues casi todo, incluso comentarios al margen y chistes." }, lvl: 3 },
+      { t: { en: "Get the main points, but miss some details.", es: "Captas las ideas principales, pero se te escapan detalles." }, lvl: 2, focus: "details" },
+      { t: { en: "Often lose the thread and need to check afterwards.", es: "A menudo pierdes el hilo y tienes que confirmar después." }, lvl: 0 },
     ],
   },
   {
-    q: "You have two minutes to give a status update in English. You…",
+    q: { en: "You have two minutes to give a status update in English. You…", es: "Tienes dos minutos para dar un reporte de avance en inglés. Tú…" },
     options: [
-      { t: "Do it well; I want it sharper under pressure.", lvl: 3 },
-      { t: "Can do it, but it runs longer than I’d like.", lvl: 2, focus: "Opening with the point: status, cause, request." },
-      { t: "Write it out first and read it.", lvl: 1, focus: "Speaking without a script when the moment comes." },
-      { t: "Avoid it, or ask someone else to do it.", lvl: 0 },
+      { t: { en: "Do it well; I want it sharper under pressure.", es: "Lo haces bien; quieres sonar más preciso bajo presión." }, lvl: 3 },
+      { t: { en: "Can do it, but it runs longer than I’d like.", es: "Puedes hacerlo, pero se alarga más de lo que quisieras." }, lvl: 2, focus: "point" },
+      { t: { en: "Write it out first and read it.", es: "Lo escribes antes y lo lees." }, lvl: 1, focus: "script" },
+      { t: { en: "Avoid it, or ask someone else to do it.", es: "Lo evitas o le pides a otra persona que lo haga." }, lvl: 0 },
     ],
   },
   {
-    q: "Someone asks you a question in a meeting and you didn’t fully catch it. You…",
+    q: { en: "Someone asks you a question in a meeting and you didn’t fully catch it. You…", es: "En una reunión te hacen una pregunta y no la entendiste del todo. Tú…" },
     options: [
-      { t: "Ask them to rephrase, then confirm what they meant.", lvl: 3 },
-      { t: "Nod and hope it becomes clear.", lvl: 2, focus: "Asking for clarification without feeling exposed." },
-      { t: "Give a general answer; I’m not sure how to ask.", lvl: 1, focus: "Asking for clarification without feeling exposed." },
+      { t: { en: "Ask them to rephrase, then confirm what they meant.", es: "Pides que la reformulen y confirmas lo que quisieron decir." }, lvl: 3 },
+      { t: { en: "Nod and hope it becomes clear.", es: "Asientes y esperas que se aclare sola." }, lvl: 2, focus: "clarify" },
+      { t: { en: "Give a general answer; I’m not sure how to ask.", es: "Respondes algo general; no sabes bien cómo preguntar." }, lvl: 1, focus: "clarify" },
     ],
   },
   {
-    q: "You need to tell a client the project is delayed. In English, you…",
+    q: { en: "You need to tell a client the project is delayed. In English, you…", es: "Tienes que decirle a un cliente que el proyecto se retrasa. En inglés…" },
     options: [
-      { t: "Could do it on a call or by email.", lvl: 3 },
-      { t: "Can write it, but I worry about how the tone lands.", lvl: 2, focus: "Delivering bad news with the right tone." },
-      { t: "Would write it in my language and translate it.", lvl: 0 },
+      { t: { en: "Could do it on a call or by email.", es: "Podrías hacerlo por llamada o por correo." }, lvl: 3 },
+      { t: { en: "Can write it, but I worry about how the tone lands.", es: "Puedes escribirlo, pero te preocupa cómo suena el tono." }, lvl: 2, focus: "tone" },
+      { t: { en: "Would write it in my language and translate it.", es: "Lo escribirías en español y lo traducirías." }, lvl: 0 },
     ],
   },
 ];
 
-// Umbrales: por debajo de esto sugerimos el programa general
-const MIN_LEVEL_SCORE = 6; // de 12 posibles (preguntas 2–5)
+const MIN_LEVEL_SCORE = 6; // de 12 posibles (preguntas 2–5); por debajo, sugerimos el programa general
 
 function evaluate(answers) {
   const picked = answers.map((a, i) => QUESTIONS[i].options[a]);
   const level = picked.slice(1).reduce((s, o) => s + (o.lvl ?? 0), 0);
   const cantFollow = picked[1].lvl === 0; // si no sigue una llamada, no está en B2
-  const leads = picked[0].lead;
-  const focus = [...new Set(picked.map((o) => o.focus).filter(Boolean))];
-
-  let tier;
+  let tier = "fit";
   if (cantFollow || level < MIN_LEVEL_SCORE) tier = "below";
-  else if (!leads) tier = "not-leading";
-  else tier = "fit";
-
-  const LABELS = { fit: "Good fit", "not-leading": "English fits — check the role", below: "Below B2 for now" };
-  return {
-    tier,
-    label: LABELS[tier],
-    focus,
-    answers: picked.map((o, i) => ({ q: QUESTIONS[i].q, a: o.t })),
-    date: new Date().toISOString(),
-  };
+  else if (!picked[0].lead) tier = "not-leading";
+  return { tier, answers: [...answers], date: new Date().toISOString() };
 }
+
+const focusOf = (r) => [...new Set(r.answers.map((a, i) => QUESTIONS[i].options[a].focus).filter(Boolean))];
 
 // localStorage puede fallar (modo privado, bloqueado): siempre con try/catch
 function load() {
-  try { return JSON.parse(localStorage.getItem(SELF_CHECK_KEY)) || null; } catch { return null; }
+  try {
+    const r = JSON.parse(localStorage.getItem(SELF_CHECK_KEY));
+    const valid = r && Array.isArray(r.answers) && r.answers.length === QUESTIONS.length
+      && r.answers.every((a, i) => Number.isInteger(a) && QUESTIONS[i].options[a]);
+    return valid ? r : null;
+  } catch { return null; }
 }
-function save(result) {
-  try { localStorage.setItem(SELF_CHECK_KEY, JSON.stringify(result)); } catch { /* sin almacenamiento: seguimos igual */ }
-}
-function clear() {
-  try { localStorage.removeItem(SELF_CHECK_KEY); } catch { /* nada */ }
-}
+function save(r) { try { localStorage.setItem(SELF_CHECK_KEY, JSON.stringify(r)); } catch { /* sin almacenamiento */ } }
+function clear() { try { localStorage.removeItem(SELF_CHECK_KEY); } catch { /* nada */ } }
 
-// Texto que viaja con el formulario
+// Etiqueta corta del resultado, en el idioma actual
+export const labelOf = (r) => (r ? t(`quiz.label.${r.tier}`) : "");
+
+// Texto que viaja a la hoja de cálculo (en el idioma de la página)
 export function summarize(r) {
   if (!r) return "";
-  const focus = r.focus.length ? ` | Focus: ${r.focus.join(" / ")}` : "";
-  const answers = r.answers.map((x, i) => `Q${i + 1}: ${x.a}`).join(" | ");
-  return `Self-check: ${r.label}${focus} | ${answers}`;
+  const L = currentLang();
+  const focus = focusOf(r).map((f) => FOCUS[f][L]);
+  const answers = r.answers.map((a, i) => `Q${i + 1}: ${QUESTIONS[i].options[a].t[L]}`).join(" | ");
+  return `${labelOf(r)}${focus.length ? ` | ${L === "es" ? "Enfoque" : "Focus"}: ${focus.join(" / ")}` : ""} | ${answers}`;
 }
 
 export function initQuiz() {
   const root = document.getElementById("quiz");
   let result = load();
-  if (!root) return { get: () => result, clear: () => {} };
-
   const listeners = new Set();
   const emit = () => listeners.forEach((fn) => fn(result));
+  if (!root) return { get: () => result, onChange: (fn) => listeners.add(fn) };
 
   let step = 0;
   let answers = [];
+  let view = result ? "result" : "step";
 
-  function el(html) {
-    const t = document.createElement("template");
-    t.innerHTML = html.trim();
-    return t.content.firstElementChild;
-  }
+  const el = (html) => {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html.trim();
+    return tpl.content.firstElementChild;
+  };
 
-  function renderStep() {
+  function renderStep(focus = false) {
+    view = "step";
+    const L = currentLang();
     const Q = QUESTIONS[step];
     const last = step === QUESTIONS.length - 1;
     const node = el(`
       <form class="quiz__step" novalidate>
-        <div class="quiz__top"><span>Question ${step + 1} of ${QUESTIONS.length}</span></div>
+        <div class="quiz__top"><span>${t("quiz.progress", { n: step + 1, total: QUESTIONS.length })}</span></div>
         <div class="quiz__bar" aria-hidden="true"><span style="transform: scaleX(${(step + 1) / QUESTIONS.length})"></span></div>
         <fieldset>
-          <legend>${Q.q}</legend>
+          <legend>${Q.q[L]}</legend>
           <div class="quiz__options">
             ${Q.options.map((o, i) => `
               <label class="opt">
                 <input type="radio" name="q${step}" value="${i}" ${answers[step] === i ? "checked" : ""}>
-                <span>${o.t}</span>
+                <span>${o.t[L]}</span>
               </label>`).join("")}
           </div>
         </fieldset>
         <p class="quiz__error field__error" role="alert"></p>
         <div class="quiz__nav">
-          <button type="button" class="linkish" data-back ${step === 0 ? "hidden" : ""}>← Back</button>
-          <button type="submit" class="btn btn--sun">${last ? "See my result" : "Next"}</button>
+          <button type="button" class="linkish" data-back ${step === 0 ? "hidden" : ""}>${t("quiz.back")}</button>
+          <button type="submit" class="btn btn--sun">${last ? t("quiz.see") : t("quiz.next")}</button>
         </div>
       </form>`);
 
+    // Guarda la elección al instante (así un cambio de idioma no la pierde)
+    node.addEventListener("change", (ev) => { answers[step] = Number(ev.target.value); });
     node.addEventListener("submit", (ev) => {
       ev.preventDefault();
       const checked = node.querySelector("input:checked");
       if (!checked) {
-        node.querySelector(".quiz__error").textContent = "Choose the option closest to you.";
+        node.querySelector(".quiz__error").textContent = t("quiz.pick");
         node.querySelector("input").focus();
         return;
       }
       answers[step] = Number(checked.value);
       if (last) finish();
-      else { step++; renderStep(); }
+      else { step++; renderStep(true); }
     });
-    node.querySelector("[data-back]").addEventListener("click", () => { step--; renderStep(); });
+    node.querySelector("[data-back]").addEventListener("click", () => { step--; renderStep(true); });
 
     root.replaceChildren(node);
-    // Foco en la primera opción (o la marcada) para seguir con teclado sin perderse
-    if (document.activeElement !== document.body || step > 0) {
-      (node.querySelector("input:checked") || node.querySelector("input")).focus({ preventScroll: true });
-    }
+    if (focus) (node.querySelector("input:checked") || node.querySelector("input")).focus({ preventScroll: true });
   }
 
   function finish() {
     result = evaluate(answers);
     save(result);
-    renderResult();
+    renderResult({ focusHeading: true });
     emit();
   }
 
-  function renderResult(restored = false) {
+  function renderResult({ restored = false, focusHeading = false } = {}) {
+    view = "result";
     const r = result;
-    const focusList = r.focus.length
-      ? `<p>Where you’d likely gain the most:</p><ul class="result__focus">${r.focus.map((f) => `<li>${f}</li>`).join("")}</ul>`
+    const L = currentLang();
+    const focus = focusOf(r);
+    const focusList = focus.length
+      ? `<p>${t("quiz.gain")}</p><ul class="result__focus">${focus.map((f) => `<li>${FOCUS[f][L]}</li>`).join("")}</ul>`
       : "";
     const generalHref = GENERAL_PROGRAM_URL || `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("General English program")}`;
-    const generalLabel = GENERAL_PROGRAM_URL ? "See the general program" : "Ask us about the general program";
+    const body = r.tier === "below"
+      ? `<p>${t("quiz.p.below")}</p><p>${t("quiz.p2.below")}</p>
+         <div class="cta-row"><a class="btn btn--sun" href="${generalHref}">${GENERAL_PROGRAM_URL ? t("quiz.cta.below") : t("quiz.cta.belowMail")}</a></div>
+         <p class="result__small">${t("quiz.small.below")}</p>`
+      : `<p>${t(`quiz.p.${r.tier}`)}</p>${focusList}
+         <div class="cta-row"><a class="btn btn--sun" href="#enroll">${t(`quiz.cta.${r.tier}`)}</a></div>
+         ${r.tier === "fit" ? `<p class="result__small">${t("quiz.small.fit")}</p>` : ""}`;
 
-    const BODY = {
-      fit: `
-        <p class="result__tag">Good fit</p>
-        <h3 tabindex="-1">This course was built for people like you.</h3>
-        <p>You already lead, and your English is in the range the course works with. What’s left is exactly what we practice: order, timing and tone under pressure.</p>
-        ${focusList}
-        <div class="cta-row"><a class="btn btn--sun" href="#enroll">Enroll now</a></div>
-        <p class="result__small">Your result will be attached to your registration. The individual diagnostic call looks at your English in more detail.</p>`,
-      "not-leading": `
-        <p class="result__tag">Check the role</p>
-        <h3 tabindex="-1">Your English fits. The context may not — yet.</h3>
-        <p>The course is built around situations leaders face: giving updates, disagreeing with stakeholders, delivering bad news. If you’re about to step into a leadership role, it can still be a good fit — mention it when you register and we’ll look at it on your diagnostic call.</p>
-        ${focusList}
-        <div class="cta-row"><a class="btn btn--sun" href="#enroll">Register and tell us more</a></div>`,
-      below: `
-        <p class="result__tag result__tag--no">Not this course — yet</p>
-        <h3 tabindex="-1">We’d rather tell you now.</h3>
-        <p>Your answers suggest your English is below B2 right now. This course assumes you can already follow a fast meeting; without that, you’d spend the sessions translating instead of practicing — and you’d be paying for the wrong course.</p>
-        <p>Our general English program is built for this step. When you’re at B2, this course will be here.</p>
-        <div class="cta-row"><a class="btn btn--sun" href="${generalHref}">${generalLabel}</a></div>
-        <p class="result__small">This is a self-check, not a level test. If you think it got you wrong, register anyway — the diagnostic call will tell us both.</p>`,
-    };
-
-    const node = el(`<div class="result quiz__step">${BODY[r.tier]}
-      <p class="result__small">${restored ? "You took this self-check before. " : ""}<button type="button" class="linkish" data-retake>Retake the self-check</button></p></div>`);
+    const node = el(`<div class="result quiz__step">
+        <p class="result__tag ${r.tier === "below" ? "result__tag--no" : ""}">${t(`quiz.tag.${r.tier}`)}</p>
+        <h3 tabindex="-1">${t(`quiz.h.${r.tier}`)}</h3>
+        ${body}
+        <p class="result__small">${restored ? `${t("quiz.before")} ` : ""}<button type="button" class="linkish" data-retake>${t("quiz.retake")}</button></p>
+      </div>`);
     node.querySelector("[data-retake]").addEventListener("click", () => {
       clear();
       result = null;
       answers = [];
       step = 0;
       emit();
-      renderStep();
-      root.querySelector("input").focus({ preventScroll: true });
+      renderStep(true);
     });
     root.replaceChildren(node);
-    if (!restored) node.querySelector("h3").focus({ preventScroll: false });
+    if (focusHeading) node.querySelector("h3").focus();
   }
 
-  if (result) renderResult(true);
-  else renderStep();
+  // Al cambiar de idioma se vuelve a pintar el paso actual, sin mover el foco
+  document.addEventListener("langchange", () => {
+    if (view === "result" && result) renderResult({ restored: true });
+    else renderStep(false);
+    emit();
+  });
 
-  return {
-    get: () => result,
-    clear: () => { clear(); result = null; answers = []; step = 0; renderStep(); emit(); },
-    onChange: (fn) => listeners.add(fn),
-  };
+  if (result) renderResult({ restored: true });
+  else renderStep(false);
+
+  return { get: () => result, onChange: (fn) => listeners.add(fn) };
 }
